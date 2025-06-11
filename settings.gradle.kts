@@ -21,5 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "AiVoiceApp"
 include(":app")
-
-rootProject.buildFileName = "build.gradele.kts"
