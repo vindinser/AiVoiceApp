@@ -1,0 +1,66 @@
+plugins {
+    if(ModuleConfig.isApp) {
+        alias(libs.plugins.android.application)
+    } else {
+        alias(libs.plugins.android.library)
+    }
+    alias(libs.plugins.kotlin.android)
+}
+
+android {
+    namespace = "com.zs.module_app_manager"
+    compileSdk = AppConfig.compileSdk
+
+    defaultConfig {
+        // 全局标志控制applicationId
+        if (ModuleConfig.isApp) {
+            // 安全转换：库模块会跳过这个设置
+            (this as? com.android.build.api.dsl.ApplicationDefaultConfig)?.applicationId = ModuleConfig.MODULE_APP_MANGER
+            (this as? com.android.build.api.dsl.ApplicationDefaultConfig)?.targetSdk = AppConfig.targetSdk
+        }
+        minSdk = AppConfig.minSdk
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
+    // 动态替换资源
+    sourceSets {
+        getByName("main") {
+            if(ModuleConfig.isApp) {
+                manifest.srcFile("src/main/manifest/AndroidManifest.xml")
+            } else {
+                manifest.srcFile("src/main/AndroidManifest.xml")
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(project(":lib_base"))
+}

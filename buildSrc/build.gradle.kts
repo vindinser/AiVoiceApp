@@ -1,23 +1,8 @@
-apply {
-    plugin("kotlin")
-}
-
-buildscript {
-    // 仓库
-    repositories {
-        gradlePluginPortal()
-    }
-    // 依赖
-    dependencies {
-        classpath(kotlin("gradle-plugin", "1.3.71"))
-    }
-}
-
-dependencies {
-    implementation(gradleKotlinDsl())
-    implementation(kotlin("stdlib", "1.3.71"))
+plugins {
+    `kotlin-dsl` // 启用 Kotlin DSL 插件
 }
 
 repositories {
-    gradlePluginPortal()
+    mavenCentral()  // 中央仓库
+    google()        // Android 插件所需
 }
