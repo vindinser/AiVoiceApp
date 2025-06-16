@@ -41,6 +41,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Event Bus
+    api(DependenciesConfig.EVENT_BUS)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

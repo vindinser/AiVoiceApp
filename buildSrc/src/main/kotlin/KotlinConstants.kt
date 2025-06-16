@@ -16,8 +16,10 @@ object AppConfig {
 
 }
 
+// 依赖常量
 object DependenciesConfig {
-    // 依赖常量
+    // Event Bus
+    const val EVENT_BUS = "org.greenrobot:eventbus:3.3.1"
 }
 
 // Module配置
