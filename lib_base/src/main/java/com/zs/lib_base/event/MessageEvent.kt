@@ -1,4 +1,4 @@
-package com.zs.lib_base.base.event
+package com.zs.lib_base.event
 
 /**
  * 事件对象

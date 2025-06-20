@@ -1,4 +1,4 @@
-package com.zs.lib_base.base.event
+package com.zs.lib_base.event
 
 import org.greenrobot.eventbus.EventBus
 import java.util.Objects

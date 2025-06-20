@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // 启用 Kapt 插件
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -18,6 +20,13 @@ android {
         versionName = AppConfig.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // ARouter
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments.plusAssign(mapOf("AROUTER_MODULE_NAME" to project.name))
+//            }
+//        }
     }
 
     // 签名配置
@@ -82,9 +91,16 @@ android {
     }
 }
 
+// ARouter
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.name)
+    }
+}
+
 // 依赖
 dependencies {
-
+    // Android基础库
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -93,6 +109,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    // 测试库
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -113,4 +130,7 @@ dependencies {
         implementation(project(":module_voice_setting"))
         implementation(project(":module_weather"))
     }
+
+    // 运行时注解
+    kapt(DependenciesConfig.AROUTER_COMPILER)
 }

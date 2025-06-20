@@ -20,6 +20,10 @@ object AppConfig {
 object DependenciesConfig {
     // Event Bus
     const val EVENT_BUS = "org.greenrobot:eventbus:3.3.1"
+
+    // ARouter
+    const val AROUTER = "com.alibaba:arouter-api:1.5.2"
+    const val AROUTER_COMPILER = "com.alibaba:arouter-compiler:1.5.2"
 }
 
 // Module配置

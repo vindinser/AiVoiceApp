@@ -44,6 +44,11 @@ dependencies {
     // Event Bus
     api(DependenciesConfig.EVENT_BUS)
 
+    // ARouter
+    api(DependenciesConfig.AROUTER)
+    // 运行时注解
+    annotationProcessor(DependenciesConfig.AROUTER_COMPILER)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

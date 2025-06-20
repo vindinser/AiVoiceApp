@@ -5,6 +5,8 @@ plugins {
         alias(libs.plugins.android.library)
     }
     alias(libs.plugins.kotlin.android)
+    // 启用 Kapt 插件
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -53,6 +55,13 @@ android {
     }
 }
 
+// ARouter
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.name)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -63,4 +72,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":lib_base"))
+
+    // 运行时注解
+    kapt(DependenciesConfig.AROUTER_COMPILER)
 }

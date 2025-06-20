@@ -21,6 +21,13 @@ android {
         minSdk = AppConfig.minSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // ARouter
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments.plusAssign(mapOf("AROUTER_MODULE_NAME" to project.name))
+            }
+        }
     }
 
     buildTypes {
@@ -62,4 +69,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":lib_base"))
+
+    // 运行时注解
+    annotationProcessor(DependenciesConfig.AROUTER_COMPILER)
 }
