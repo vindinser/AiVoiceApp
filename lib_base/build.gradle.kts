@@ -46,6 +46,7 @@ dependencies {
 
     // ARouter
     api(DependenciesConfig.AROUTER)
+    // api(DependenciesConfig.THEROUTER_PLUGIN)
     // 运行时注解
     annotationProcessor(DependenciesConfig.AROUTER_COMPILER)
 

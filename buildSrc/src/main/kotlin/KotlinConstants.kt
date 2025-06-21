@@ -22,14 +22,22 @@ object DependenciesConfig {
     const val EVENT_BUS = "org.greenrobot:eventbus:3.3.1"
 
     // ARouter
-    const val AROUTER = "com.alibaba:arouter-api:1.5.2"
-    const val AROUTER_COMPILER = "com.alibaba:arouter-compiler:1.5.2"
+    // const val AROUTER = "com.alibaba:arouter-api:1.5.2"
+    // const val AROUTER_COMPILER = "com.alibaba:arouter-compiler:1.5.2"
+
+    // TheRouter
+    const val AROUTER = "cn.therouter:router:1.3.0-rc4"
+    const val AROUTER_COMPILER = "cn.therouter:apt:1.3.0-rc4"
+    const val THEROUTER_PLUGIN = "cn.therouter:plugin:1.3.0-rc4"
 }
 
 // Module配置
 object ModuleConfig {
     // 是否APP
     var isApp = false
+
+    // TheRouter日志打印
+    var IsTheRouterLogPrint = "true"
 
     // 包名
     const val MODULE_APP_MANGER = "com.zs.module_app_manager"

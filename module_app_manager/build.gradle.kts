@@ -5,8 +5,8 @@ plugins {
         alias(libs.plugins.android.library)
     }
     alias(libs.plugins.kotlin.android)
-    // 启用 Kapt 插件
-    alias(libs.plugins.kotlin.kapt)
+    // 启用 Ksp 插件
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -36,11 +36,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     // 动态替换资源
@@ -55,11 +55,22 @@ android {
     }
 }
 
-// ARouter
-kapt {
-    arguments {
-        arg("AROUTER_MODULE_NAME", project.name)
-    }
+// TheRouter
+ksp {
+    // 指定当前模块名称
+    arg("ROUTER_MODULE_NAME", project.name)
+    // 模块类型
+    arg("MODULE_TYPE", "feature")
+
+    // 日志开关（开发阶段打开）
+    arg("LOG_PRINT", ModuleConfig.IsTheRouterLogPrint)
+    // 路由冲突检测（必开）
+    arg("CHECK_ROUTE_MAP", "true")
+    // 文档生成类型（可选）
+    arg("ROUTER_DOC_PAGE", "NONE")
+
+    // 开启路由压缩
+    arg("COMPRESS_ROUTE", "true")
 }
 
 dependencies {
@@ -74,5 +85,5 @@ dependencies {
     implementation(project(":lib_base"))
 
     // 运行时注解
-    kapt(DependenciesConfig.AROUTER_COMPILER)
+    ksp(DependenciesConfig.AROUTER_COMPILER)
 }

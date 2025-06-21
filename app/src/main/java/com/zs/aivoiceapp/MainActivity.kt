@@ -81,7 +81,7 @@ fun TextBtn(modifier: Modifier = Modifier) {
         // 按钮组件
         Button(
             onClick = {
-                ARouterHelper.startActivity(ARouterHelper.PATH_APP_MANAGER)
+                ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
             },
             modifier = Modifier.padding(16.dp)
         ) {

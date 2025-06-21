@@ -4,8 +4,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    // 启用 Kapt 插件
-    alias(libs.plugins.kotlin.kapt)
+    // 启用 ksp 插件
+    alias(libs.plugins.kotlin.ksp)
+    // TheRouter Plugin
+    // alias(libs.plugins.therouter.plugin)
 }
 
 android {
@@ -22,11 +24,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // ARouter
-//        javaCompileOptions {
-//            annotationProcessorOptions {
-//                arguments.plusAssign(mapOf("AROUTER_MODULE_NAME" to project.name))
-//            }
-//        }
+        // javaCompileOptions {
+        //     annotationProcessorOptions {
+        //         arguments.plusAssign(mapOf("AROUTER_MODULE_NAME" to project.name))
+        //     }
+        // }
     }
 
     // 签名配置
@@ -80,11 +82,11 @@ android {
 
     // 依赖操作
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -92,10 +94,48 @@ android {
 }
 
 // ARouter
-kapt {
-    arguments {
-        arg("AROUTER_MODULE_NAME", project.name)
-    }
+//kapt {
+//    arguments {
+//        arg("AROUTER_MODULE_NAME", project.name)
+//    }
+//}
+
+// TheRouter
+ksp {
+    // 指定根包名（必须与主应用包名相同）
+    arg("THEROUTER_APP_PACKAGE", AppConfig.applicationId)
+    arg("KSP_MODULE_NAME", project.name)
+    // 指定当前模块名称
+    arg("ROUTER_MODULE_NAME", project.name)
+    // 模块类型
+    arg("MODULE_TYPE", "app")
+
+    // 关键：聚合所有模块路由
+    arg("ROUTER_MODULES", "module_app_manager:" +
+            "module_constellation:" +
+            "module_developer:" +
+            "module_joke:" +
+            "module_map:" +
+            "module_setting:" +
+            "module_voice_setting:" +
+            "module_weather"
+    )
+    // 强制生成合并路由表
+    arg("GENERATE_ROUTE_MAP_MERGE", "true")
+
+    // 日志开关（开发阶段打开）
+    arg("LOG_PRINT", ModuleConfig.IsTheRouterLogPrint)
+    // 路由冲突检测（必开）
+    arg("CHECK_ROUTE_MAP", "true")
+    // 文档生成类型（可选）
+    arg("ROUTER_DOC_PAGE", "NONE")
+
+    // 开启路由压缩
+    arg("COMPRESS_ROUTE", "true")
+    // 开启增量编译 KSP 1.9.0+ 默认启用
+    // arg("KSP_INCREMENTAL", "true")
+    // 路由缓存优化 1.2.4 此参数已弃用
+    // arg("ROUTE_CACHE_SIZE", "1000")
 }
 
 // 依赖
@@ -132,5 +172,5 @@ dependencies {
     }
 
     // 运行时注解
-    kapt(DependenciesConfig.AROUTER_COMPILER)
+    ksp(DependenciesConfig.AROUTER_COMPILER)
 }
