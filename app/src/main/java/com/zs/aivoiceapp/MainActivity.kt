@@ -21,6 +21,8 @@ import com.zs.aivoiceapp.ui.theme.AiVoiceAppTheme
 import com.zs.lib_base.event.EventManager
 import com.zs.lib_base.event.MessageEvent
 import com.zs.lib_base.helper.ARouterHelper
+import com.zs.lib_base.utils.L
+import com.zs.lib_base.utils.SpUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -47,6 +49,13 @@ class MainActivity : ComponentActivity() {
         EventManager.post(111)
         // EventManager.post(111, "helloWorld")
 
+        val k: String = "sharepreferences"
+        SpUtils.putString(k, "text")
+        val sp = SpUtils.getString(k)
+        k?.let {
+            L.i(it)
+            L.e(it)
+        }
     }
 
     override fun onDestroy() {
@@ -81,7 +90,7 @@ fun TextBtn(modifier: Modifier = Modifier) {
         // 按钮组件
         Button(
             onClick = {
-                ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
+                ARouterHelper.startActivity(ARouterHelper.PATH_SETTING)
             },
             modifier = Modifier.padding(16.dp)
         ) {
