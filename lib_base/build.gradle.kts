@@ -50,6 +50,9 @@ dependencies {
     // 运行时注解
     annotationProcessor(DependenciesConfig.AROUTER_COMPILER)
 
+    // RecyclerView
+    api(DependenciesConfig.RECYCLERVIEW)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

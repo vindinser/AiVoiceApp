@@ -29,6 +29,9 @@ object DependenciesConfig {
     const val AROUTER = "cn.therouter:router:1.3.0-rc4"
     const val AROUTER_COMPILER = "cn.therouter:apt:1.3.0-rc4"
     const val THEROUTER_PLUGIN = "cn.therouter:plugin:1.3.0-rc4"
+
+    // RecyclerView
+    const val RECYCLERVIEW = "androidx.recyclerview:recyclerview:1.2.1"
 }
 
 // Module配置
