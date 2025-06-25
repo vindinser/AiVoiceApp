@@ -43,6 +43,9 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        // 跳转开发者模式
+        jumpToDeveloper()
+
         // 注册EventBus
         EventManager.register(this)
 
@@ -90,7 +93,7 @@ fun TextBtn(modifier: Modifier = Modifier) {
         // 按钮组件
         Button(
             onClick = {
-                ARouterHelper.startActivity(ARouterHelper.PATH_SETTING)
+                jumpToDeveloper()
             },
             modifier = Modifier.padding(16.dp)
         ) {
@@ -105,4 +108,8 @@ fun GreetingPreview() {
     AiVoiceAppTheme {
         Greeting("Android")
     }
+}
+
+private fun jumpToDeveloper() {
+    ARouterHelper.startActivity(ARouterHelper.PATH_DEVELOPER)
 }
