@@ -34,4 +34,28 @@ object L {
             }
         }
     }
+
+    fun w(text: String?) {
+        if(BuildConfig.DEBUG) {
+            text?.let {
+                Log.w(TAG_DEBUG, it)
+            }
+        } else {
+            text?.let {
+                Log.w(TAG, it)
+            }
+        }
+    }
+
+    fun d(text: String?) {
+        if(BuildConfig.DEBUG) {
+            text?.let {
+                Log.d(TAG_DEBUG, it)
+            }
+        } else {
+            text?.let {
+                Log.d(TAG, it)
+            }
+        }
+    }
 }

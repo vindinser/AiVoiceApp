@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 前台服务权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 添加通知相关权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
     <application
         android:name="com.zs.lib_base.base.BaseApp"
         android:allowBackup="true"
@@ -12,8 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AiVoiceApp"
         tools:targetApi="31">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".AppMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AiVoiceApp">
@@ -23,6 +32,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".VoiceService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone"
+            android:permission="android.permission.FOREGROUND_SERVICE" />
     </application>
 
 </manifest>

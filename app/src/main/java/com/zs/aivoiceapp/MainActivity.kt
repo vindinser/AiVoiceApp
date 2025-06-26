@@ -1,5 +1,6 @@
 package com.zs.aivoiceapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -59,6 +60,9 @@ class MainActivity : ComponentActivity() {
             L.i(it)
             L.e(it)
         }
+
+        // 启动服务
+        // startService(Intent(this, VoiceService::class.java))
     }
 
     override fun onDestroy() {
