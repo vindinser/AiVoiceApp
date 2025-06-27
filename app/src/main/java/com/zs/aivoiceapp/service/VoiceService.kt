@@ -1,4 +1,4 @@
-package com.zs.aivoiceapp
+package com.zs.aivoiceapp.service
 
 import android.app.Service
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import com.zs.lib_base.helper.NotificationHelper
+import com.zs.lib_base.utils.L
+import com.zs.lib_voice.manager.VoiceManager
 
 /**
  * 语音服务
@@ -13,6 +15,16 @@ import com.zs.lib_base.helper.NotificationHelper
 class VoiceService: Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onCreate() {
+        L.i("语音服务启动 --> baiduTTS")
+        initService()
+    }
+
+    // 初始化语音服务
+    private fun initService() {
+        VoiceManager.initManager(this)
+    }
 
     /**
      * START_STICKY, 当系统内存不足的时候，杀掉了服务，那么在系统内存不再紧张的时候，启动服务

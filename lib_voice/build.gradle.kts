@@ -40,4 +40,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    api(fileTree(mapOf("dir" to "libs", "includes" to listOf("*.jar"))))
+
+    // 百度TTS
+    api(files("libs/bdtts.jar"))
 }

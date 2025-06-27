@@ -8,6 +8,7 @@ import com.zs.lib_base.base.BaseActivity
 import com.zs.lib_base.base.adapter.CommonAdapter
 import com.zs.lib_base.base.adapter.CommonViewHolder
 import com.zs.lib_base.helper.ARouterHelper
+import com.zs.lib_voice.manager.VoiceManager
 import com.zs.module_developer.data.DeveloperListData
 
 /**
@@ -104,6 +105,7 @@ class DeveloperActivity: BaseActivity() {
     // 点击事件
     private fun itemClickFun(position: Int) {
         when(position) {
+            // 路由跳转
             1 -> ARouterHelper.startActivity(ARouterHelper.PATH_APP_MANAGER)
             2 -> ARouterHelper.startActivity(ARouterHelper.PATH_CONSTELLATION)
             3 -> ARouterHelper.startActivity(ARouterHelper.PATH_JOKE)
@@ -111,6 +113,13 @@ class DeveloperActivity: BaseActivity() {
             5 -> ARouterHelper.startActivity(ARouterHelper.PATH_SETTING)
             6 -> ARouterHelper.startActivity(ARouterHelper.PATH_VOICE_SETTING)
             7 -> ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
+
+            // TTS
+            21 -> VoiceManager.start("您好，我是您的语音助手，很高兴认识您！")
+            22 -> VoiceManager.pause()
+            23 -> VoiceManager.resume()
+            24 -> VoiceManager.stop()
+            25 -> VoiceManager.release()
         }
     }
 }
