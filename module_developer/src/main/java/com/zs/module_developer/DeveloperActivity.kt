@@ -1,5 +1,6 @@
 package com.zs.module_developer
 
+import android.util.Log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.zs.lib_base.base.adapter.CommonAdapter
 import com.zs.lib_base.base.adapter.CommonViewHolder
 import com.zs.lib_base.helper.ARouterHelper
 import com.zs.lib_voice.manager.VoiceManager
+import com.zs.lib_voice.tts.VoiceTTS
 import com.zs.module_developer.data.DeveloperListData
 
 /**
@@ -115,11 +117,16 @@ class DeveloperActivity: BaseActivity() {
             7 -> ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
 
             // TTS
-            21 -> VoiceManager.start("您好，我是您的语音助手，很高兴认识您！")
-            22 -> VoiceManager.pause()
-            23 -> VoiceManager.resume()
-            24 -> VoiceManager.stop()
-            25 -> VoiceManager.release()
+            // 21 -> VoiceManager.start("您好，我是您的语音助手，很高兴认识您！")
+            21 -> VoiceManager.ttsStart("您好，我是您的语音助手，很高兴认识您！", object: VoiceTTS.OnTTSResultListener {
+                override fun ttsEnd() {
+                    Log.i("TextOnTTSResultListener", "TTS --> End")
+                }
+            })
+            22 -> VoiceManager.ttsPause()
+            23 -> VoiceManager.ttsResume()
+            24 -> VoiceManager.ttsStop()
+            25 -> VoiceManager.ttsRelease()
         }
     }
 }

@@ -19,6 +19,9 @@ object VoiceTTS : SpeechSynthesizerListener {
     // TTS对象
     private lateinit var mSpeechSynthesizer: SpeechSynthesizer
 
+    // 接口对象
+    private var mOnTTSResultListener: OnTTSResultListener? = null
+
     // 初始化TTS
     fun initTTS(mContext: Context) {
         // 初始化 TTS对象
@@ -33,14 +36,30 @@ object VoiceTTS : SpeechSynthesizerListener {
         mSpeechSynthesizer.setSpeechSynthesizerListener(this)
 
         // 发声人
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0")
+        setPeople("0")
         // 语速
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, "5")
+        setVoiceSpeed("5")
         // 音量
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "15")
+        setVoiceVolume("15")
 
         // 初始化
         mSpeechSynthesizer.initTts(TtsMode.ONLINE)
+        Log.i(TAG, "TTS init")
+    }
+
+    // 设置语速
+    fun setVoiceSpeed(speed: String) {
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, speed)
+    }
+
+    // 设置音量
+    fun setVoiceVolume(volume: String) {
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, volume)
+    }
+
+    // 设置发音人
+    fun setPeople(people: String) {
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, people)
     }
 
     override fun onSynthesizeStart(p0: String?) {
@@ -52,7 +71,7 @@ object VoiceTTS : SpeechSynthesizerListener {
     }
 
     override fun onSynthesizeFinish(p0: String?) {
-
+        Log.i(TAG, "合成结束")
     }
 
     override fun onSpeechStart(p0: String?) {
@@ -64,7 +83,8 @@ object VoiceTTS : SpeechSynthesizerListener {
     }
 
     override fun onSpeechFinish(p0: String?) {
-        Log.i(TAG, "合成结束")
+        Log.i(TAG, "播放结束")
+        mOnTTSResultListener?.ttsEnd()
     }
 
     override fun onError(p0: String?, p1: SpeechError?) {
@@ -73,6 +93,13 @@ object VoiceTTS : SpeechSynthesizerListener {
 
     // 播放
     fun start(text: String) {
+        mSpeechSynthesizer.speak(text)
+    }
+
+    // 播放且有回调
+    fun start(text: String, mOnTTSResultListener: OnTTSResultListener) {
+        this.mOnTTSResultListener = mOnTTSResultListener
+
         mSpeechSynthesizer.speak(text)
     }
 
@@ -94,5 +121,12 @@ object VoiceTTS : SpeechSynthesizerListener {
     // 释放资源
     fun release() {
         mSpeechSynthesizer.release()
+    }
+
+    // 接口
+    interface OnTTSResultListener {
+
+        // 播放结束
+        fun ttsEnd()
     }
 }

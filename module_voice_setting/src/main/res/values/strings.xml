@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS发声人 -->
+    <array name="TTSPeople">
+        <item>小美（标准女声）</item>
+        <item>小宇（标准男声）</item>
+        <item>逍遥（情感男声）</item>
+        <item>丫丫（情感童声）</item>
+        <item>博文（情感男声）</item>
+        <item>小童（情感童声）</item>
+        <item>小萌（情感女声）</item>
+        <item>米朵（情感童声）</item>
+        <item>小娇（情感女声）</item>
+    </array>
+    <!-- 发声人索引 -->
+    <string-array name="TTSPeopleIndex">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>4</item>
+        <item>106</item>
+        <item>110</item>
+        <item>111</item>
+        <item>103</item>
+        <item>5</item>
+    </string-array>
+</resources>

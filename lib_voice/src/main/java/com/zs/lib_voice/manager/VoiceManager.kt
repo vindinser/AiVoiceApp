@@ -21,28 +21,48 @@ object VoiceManager {
      * --------------------TTS Start
      */
     // 播放
-    fun start(text: String) {
+    fun ttsStart(text: String) {
         VoiceTTS.start(text)
     }
 
+    // 播放且有回调
+    fun ttsStart(text: String, mOnTTSResultListener: VoiceTTS.OnTTSResultListener) {
+        VoiceTTS.start(text, mOnTTSResultListener)
+    }
+
     // 暂停
-    fun pause() {
+    fun ttsPause() {
         VoiceTTS.pause()
     }
 
     // 继续
-    fun resume() {
+    fun ttsResume() {
         VoiceTTS.resume()
     }
 
     // 停止
-    fun stop() {
+    fun ttsStop() {
         VoiceTTS.stop()
     }
 
     // 释放资源
-    fun release() {
+    fun ttsRelease() {
         VoiceTTS.release()
+    }
+
+    // 设置语速
+    fun setVoiceSpeed(speed: String) {
+        VoiceTTS.setVoiceSpeed(speed)
+    }
+
+    // 设置音量
+    fun setVoiceVolume(volume: String) {
+        VoiceTTS.setVoiceVolume(volume)
+    }
+
+    // 设置发音人
+    fun setPeople(people: String) {
+        VoiceTTS.setPeople(people)
     }
     /**
      * --------------------TTS End
