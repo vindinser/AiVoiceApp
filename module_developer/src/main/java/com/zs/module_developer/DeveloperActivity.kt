@@ -116,6 +116,11 @@ class DeveloperActivity: BaseActivity() {
             6 -> ARouterHelper.startActivity(ARouterHelper.PATH_VOICE_SETTING)
             7 -> ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
 
+            // 语音唤醒
+            14 -> VoiceManager.startWakeUp()
+            15 -> VoiceManager.stopWakeUp()
+            16 -> VoiceManager.releaseWakeUp()
+
             // TTS
             // 21 -> VoiceManager.start("您好，我是您的语音助手，很高兴认识您！")
             21 -> VoiceManager.ttsStart("您好，我是您的语音助手，很高兴认识您！", object: VoiceTTS.OnTTSResultListener {

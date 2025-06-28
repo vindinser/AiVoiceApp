@@ -35,6 +35,19 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <!-- 百度语音SDK 4.x版本要求 必须通过启动参数传递APP_ID ，仅配置AndroidManifest无法满足唤醒功能的认证要求 -->
+        <!-- <meta-data -->
+        <!--     android:name="com.baidu.speech.APP_ID" -->
+        <!--     android:value="119333605" /> -->
+
+        <!-- <meta-data -->
+        <!--     android:name="com.baidu.speech.APP_KEY" -->
+        <!--     android:value="z5WbhZoNBzcKObxsrYKcWIaU" /> -->
+
+        <!-- <meta-data -->
+        <!--     android:name="com.baidu.speech.SECRET_KEY" -->
+        <!--     android:value="wKT3COoIYgMcKsFhs3pqlhlAKx1OFFbc" /> -->
+
         <activity
             android:name=".AppMainActivity"
             android:exported="true"

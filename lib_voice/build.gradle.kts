@@ -43,6 +43,8 @@ dependencies {
 
     api(fileTree(mapOf("dir" to "libs", "includes" to listOf("*.jar"))))
 
-    // 百度TTS
+    // 百度TTS（语音合成）
     api(files("libs/bdtts.jar"))
+    // 百度ASR（语音识别）
+    api(files("libs/bdasr.jar"))
 }
