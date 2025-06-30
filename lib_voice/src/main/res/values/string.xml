@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 唤醒词条 -->
+    <array name="WakeUpListArray">
+        <item>我在呢</item>
+        <item>请说</item>
+        <item>有什么吩咐</item>
+        <item>主人，我在</item>
+    </array>
+    <!-- 无应答词条 -->
+    <array name="NoAnswerListArray">
+        <item>不明白</item>
+        <item>不明白你在说什么</item>
+        <item>这可难倒我了</item>
+        <item>很抱歉，听不懂你在说什么</item>
+    </array>
+    <!-- 暂不支持词条 -->
+    <array name="NoSupportListArray">
+        <item>暂不支持此功能</item>
+        <item>很抱歉，这个功能我还在学习</item>
+        <item>Sorry，这个我不会</item>
+    </array>
+</resources>
