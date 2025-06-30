@@ -52,7 +52,7 @@ object VoiceWakeUp {
     }
 
     // 释放唤醒资源
-    fun releaseWakeUp() {
-        // wp.send(SpeechConstant.WAKEUP_UNLOAD_ENGINE, null, null, 0, 0)
+    fun releaseWakeUp(listener: EventListener) {
+        wp.unregisterListener(listener)
     }
 }
