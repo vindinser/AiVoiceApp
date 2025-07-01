@@ -32,6 +32,10 @@ object DependenciesConfig {
 
     // RecyclerView
     const val RECYCLERVIEW = "androidx.recyclerview:recyclerview:1.2.1"
+
+    // Retrofit
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:3.0.0"
+    const val RETROFIT_GSON = "com.squareup.retrofit2:converter-gson:3.0.0"
 }
 
 // Module配置

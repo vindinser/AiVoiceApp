@@ -40,4 +40,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Retrofit
+    api(DependenciesConfig.RETROFIT)
+    api(DependenciesConfig.RETROFIT_GSON)
 }
