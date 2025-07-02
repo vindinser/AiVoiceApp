@@ -54,6 +54,9 @@ dependencies {
     // RecyclerView
     api(DependenciesConfig.RECYCLERVIEW)
 
+    // MagicViewPager
+    api(DependenciesConfig.VIEWPAGER)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

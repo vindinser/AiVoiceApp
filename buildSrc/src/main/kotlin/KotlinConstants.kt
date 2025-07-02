@@ -36,6 +36,11 @@ object DependenciesConfig {
     // Retrofit
     const val RETROFIT = "com.squareup.retrofit2:retrofit:3.0.0"
     const val RETROFIT_GSON = "com.squareup.retrofit2:converter-gson:3.0.0"
+
+    // MagicViewPager
+    // const val VIEWPAGER = "com.zhy:magic-viewpager:1.0.1"
+    const val VIEWPAGER = "androidx.viewpager2:viewpager2:1.1.0"
+    const val TABLAYOUT = "com.google.android.material:material:1.11.0"
 }
 
 // Module配置

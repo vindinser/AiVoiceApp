@@ -151,6 +151,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.appcompat)
+    implementation(libs.androidx.cardview)
     // 测试库
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

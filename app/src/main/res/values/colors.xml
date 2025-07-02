@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- 主页轮播颜色 -->
+    <color name="colorWeather">#006BD9</color>
+    <color name="colorConstellation">#94BD2C</color>
+    <color name="colorJoke">#CEA1C7</color>
+    <color name="colorMap">#A37F42</color>
+    <color name="colorAppManager">#209010</color>
+    <color name="colorVoiceSetting">#FCA39A</color>
+    <color name="colorSystemSetting">#464646</color>
+    <color name="colorDeveloper">#CF2A02</color>
 </resources>
