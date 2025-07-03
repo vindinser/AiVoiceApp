@@ -1,11 +1,32 @@
 package com.zs.lib_base.base
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 abstract class BaseActivity: ComponentActivity() {
+
+    // 权限请求器
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions.all { it.value }) {
+            // 请求通过执行方法需要子类重写（也可不重写）
+            permissionsAllowed()
+        } else {
+            handlePermissionDenied()
+        }
+    }
+
+    protected val codeWindowRequest = 1000
 
     // 获取布局ID
     abstract fun getLayoutId(): Int
@@ -47,4 +68,98 @@ abstract class BaseActivity: ComponentActivity() {
         }
         return true
     }
+
+    // 检查安卓版本是否大于6.0
+    private fun checkGreaterThanM(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+    }
+
+    // 检查窗口权限
+    protected fun checkWindowPermission(): Boolean {
+        if(checkGreaterThanM()) {
+            return Settings.canDrawOverlays(this)
+        }
+        return true
+    }
+
+    // 申请窗口权限
+    protected fun requestWindowPermission() {
+        if(checkGreaterThanM()) {
+            // startActivityForResult(
+            //     Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package${ packageName }")),
+            //     codeWindowRequest
+            // )
+            try {
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
+                    data = Uri.parse("package:$packageName")
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivityForResult(intent, codeWindowRequest)
+                } else {
+                    openAppSettingsFallback()
+                }
+            } catch (e: Exception) {
+                openAppSettingsFallback()
+            }
+        }
+    }
+
+    // 备用回退方案（处理不支持设备）
+    private fun openAppSettingsFallback() {
+        try {
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.parse("package:$packageName")
+                startActivityForResult(this, codeWindowRequest)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "请到设置 → 应用 → 本应用 → 权限中开启悬浮窗权限", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // 检查权限（多个）
+    protected fun hasRequiredPermissions(permissions: Array<String>): Boolean {
+        if(checkGreaterThanM()) {
+            return permissions.all { permission ->
+                ContextCompat.checkSelfPermission(
+                    this, permission
+                ) == PackageManager.PERMISSION_GRANTED
+            }
+        }
+        return true
+    }
+
+    // 检查权限（单个）
+    protected fun checkPermission(permission: String): Boolean {
+        if(checkGreaterThanM()) {
+            return checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED
+        }
+        return true
+    }
+
+    // 处理权限被拒绝
+    private fun handlePermissionDenied() {
+        // 自定义处理逻辑，例如显示对话框或关闭应用
+        finish()
+    }
+
+    // 请求权限
+    protected fun requestPermissions(permissions: Array<String>) {
+        permissionLauncher.launch(permissions)
+    }
+
+    // 请求权限以后需要做什么
+    open fun permissionsAllowed() {}
+
+    // 请求权限（使用AndPermission）
+    // protected fun requestPermissionsAndPermission(permission: Array<String>, granted: Auction<List<String>>) {
+    //     if(checkGreaterThanM()) {
+    //         AndPermission.with(this)
+    //             .runtime()
+    //             .permission(permission)
+    //             .onGranted(granted)
+    //             .srart()
+    //     }
+    // }
 }

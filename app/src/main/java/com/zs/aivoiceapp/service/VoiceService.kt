@@ -4,8 +4,17 @@ import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.zs.aivoiceapp.R
+import com.zs.aivoiceapp.adapter.ChatListAdapter
+import com.zs.aivoiceapp.data.ChatListData
+import com.zs.aivoiceapp.entity.AppConstants
 import com.zs.lib_base.helper.NotificationHelper
+import com.zs.lib_base.helper.WindowHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
@@ -20,6 +29,13 @@ import org.json.JSONObject
  */
 class VoiceService: Service(), OnNluResultListener {
 
+    private val mHandler = Handler()
+
+    private lateinit var mFullWindowView: View
+    private lateinit var mChatListView: RecyclerView
+    private var mList = ArrayList<ChatListData>()
+    private lateinit var mChatListAdapter: ChatListAdapter
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
@@ -28,6 +44,13 @@ class VoiceService: Service(), OnNluResultListener {
 
     // 初始化语音服务
     private fun initCoreVoiceService() {
+
+        L.i("窗口初始化 --> WindowManager")
+        WindowHelper.initHelper(this)
+        mFullWindowView = WindowHelper.getView(R.layout.layout_window_item)
+        mChatListView = mFullWindowView.findViewById<RecyclerView>(R.id.mChatListView)
+        mChatListView.layoutManager = LinearLayoutManager(this)
+        mChatListAdapter = ChatListAdapter(mList)
 
         L.i("语音服务启动 --> baiduTTS")
         VoiceManager.initManager(this, object : OnAsrResultListener{
@@ -45,7 +68,9 @@ class VoiceService: Service(), OnNluResultListener {
                     val word = result.optString("word")
                     if(word == "小雪同学") {
                         // 应答
-                        VoiceManager.ttsStart(WordsTools.wakeUpWords(), object : VoiceTTS.OnTTSResultListener {
+                        val wakeupText = WordsTools.wakeUpWords()
+                        addMineText((wakeupText))
+                        VoiceManager.ttsStart(wakeupText, object : VoiceTTS.OnTTSResultListener {
                             override fun ttsEnd() {
                                 // 启动语音识别
                                 VoiceManager.startAsr()
@@ -56,11 +81,13 @@ class VoiceService: Service(), OnNluResultListener {
             }
 
             override fun asrStartSpeak() {
+                showWindow()
                 L.i("开始说话")
             }
 
             override fun asrStopSpeak() {
                 L.i("结束说话")
+                hideWindow()
             }
 
             override fun asrResult(result: JSONObject) {
@@ -71,11 +98,13 @@ class VoiceService: Service(), OnNluResultListener {
             override fun nluResult(nlu: JSONObject) {
                 L.i("====================== NLU ============================")
                 L.i("nlu：$nlu")
+                addAIText(nlu.toString())
                 VoiceEngineAnalyze.analyzeNlu(nlu, this@VoiceService)
             }
 
             override fun voiceError(text: String) {
                 L.i("发生错误：${ text }")
+                hideWindow()
             }
         })
     }
@@ -107,5 +136,39 @@ class VoiceService: Service(), OnNluResultListener {
     // 查询天气
     override fun queryWeather() {
 
+    }
+
+    // 显示窗口
+    private fun showWindow() {
+        L.i("================== 显示窗口 ====================")
+        WindowHelper.show(mFullWindowView)
+    }
+
+    // 隐藏窗口
+    private fun hideWindow() {
+        mHandler.postDelayed({
+            L.i("================== 隐藏窗口 ====================")
+            WindowHelper.hide(mFullWindowView)
+        }, 2*1000)
+    }
+
+    // 添加我的文本
+    private fun addMineText(text: String) {
+        val bean = ChatListData(AppConstants.TYPE_MINE_TEXT)
+        bean.text = text
+        baseAddItem(bean)
+    }
+
+    // 添加AI的文本
+    private fun addAIText(text: String) {
+        val bean = ChatListData(AppConstants.TYPE_AI_TEXT)
+        bean.text = text
+        baseAddItem(bean)
+    }
+
+    // 添加基类
+    private fun baseAddItem(bean: ChatListData) {
+        mList.add(bean)
+        mChatListAdapter.notifyItemInserted(mList.size - 1)
     }
 }

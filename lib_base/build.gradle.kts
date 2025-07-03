@@ -57,6 +57,9 @@ dependencies {
     // MagicViewPager
     api(DependenciesConfig.VIEWPAGER)
 
+    // AndPermissions
+    // api(DependenciesConfig.AND_PERMISSIONS)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

@@ -38,7 +38,7 @@ object VoiceManager: EventListener {
         // 初始化语音唤醒
         VoiceWakeUp.initWakeUp(mContext, this)
         // 初始化语音识别（asr）
-        // VoiceAsr.initAsr(mContext, this)
+        VoiceAsr.initAsr(mContext, this)
     }
 
     override fun onEvent(name: String?, params: String?, byte: ByteArray?, offset: Int, length: Int) {

@@ -2,13 +2,10 @@ package com.zs.aivoiceapp
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.zs.aivoiceapp.converter.ScaleInTransformer
 import com.zs.aivoiceapp.data.MainListData
@@ -31,44 +28,29 @@ class AppMainActivity : BaseActivity() {
     // 是否显示返回键
     override fun isShowBack(): Boolean = false
 
-    // 权限请求器
-    private val permissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        if (permissions.all { it.value }) {
-            startServices()
-        } else {
-            handlePermissionDenied()
-        }
-    }
-
-    private val REQUIRED_PERMISSIONS = arrayOf(
-        Manifest.permission.RECORD_AUDIO
-    )
-
     // 初始化
     override fun initView() {
         /* 使用 AndPermission 获取权限
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M) {
-            if(checkSelfPermission(Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_DENIED) {
-                startServices()
-            } else {
-                AndPermission.with(this)
-                    .runtime()
-                    .permission(Permission.RECORD_AUDIO)
-                    .onGranted { ARouterHelper.startActivity(ARouterHelper.PATH_DEVELOPER) }
-                    .srart()
-            }
-        } else {
+        if(checkPermission(Manifest.permission.RECORD_AUDIO)) {
             startServices()
+        } else {
+            requestPermissionsAndPermission(requiredPermissions, object : Auction<List<String>> { startServices })
         }
         */
+        val requiredPermissions = arrayOf(
+            Manifest.permission.RECORD_AUDIO
+        )
 
         // 检查权限
-        if (hasRequiredPermissions()) {
+        if(hasRequiredPermissions(requiredPermissions)) {
             startServices()
         } else {
-            requestPermissions()
+            requestPermissions(requiredPermissions)
+        }
+
+        // 窗口权限
+        if(!checkWindowPermission()) {
+            requestWindowPermission()
         }
 
         // 初始化数据
@@ -77,24 +59,9 @@ class AppMainActivity : BaseActivity() {
         initPageView()
     }
 
-    // 检查权限
-    private fun hasRequiredPermissions(): Boolean {
-        return REQUIRED_PERMISSIONS.all { permission ->
-            ContextCompat.checkSelfPermission(
-                this, permission
-            ) == PackageManager.PERMISSION_GRANTED
-        }
-    }
-
-    // 请求权限
-    private fun requestPermissions() {
-        permissionLauncher.launch(REQUIRED_PERMISSIONS)
-    }
-
-    // 处理权限被拒绝
-    private fun handlePermissionDenied() {
-        // 自定义处理逻辑，例如显示对话框或关闭应用
-        finish()
+    // 权限申请通过后启动服务
+    override fun permissionsAllowed() {
+        startServices()
     }
 
     // 启动服务

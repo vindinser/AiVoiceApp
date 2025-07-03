@@ -41,6 +41,9 @@ object DependenciesConfig {
     // const val VIEWPAGER = "com.zhy:magic-viewpager:1.0.1"
     const val VIEWPAGER = "androidx.viewpager2:viewpager2:1.1.0"
     const val TABLAYOUT = "com.google.android.material:material:1.11.0"
+
+    // 权限请求
+    // const val AND_PERMISSIONS = "com.yanzhenjie:permission:2.0.2"
 }
 
 // Module配置
