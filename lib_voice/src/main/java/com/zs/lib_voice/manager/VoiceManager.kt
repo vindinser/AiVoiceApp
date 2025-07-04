@@ -64,6 +64,8 @@ object VoiceManager: EventListener {
 
         val allJSON = JSONObject(params)
 
+        // Log.i("test", "allJSON:$name:$allJSON")
+
         // 监听成功呢
         name?.let {
             when(it) {
@@ -77,6 +79,9 @@ object VoiceManager: EventListener {
                 SpeechConstant.CALLBACK_EVENT_ASR_FINISH -> mOnAsrResultListener.asrResult(allJSON)
                 // 最终语义
                 SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL -> {
+                    // 更新用户话术
+                    mOnAsrResultListener.updateUserText(allJSON.optString("best_result"))
+
                     byte?.let {
                         var nlu = JSONObject(String(byte, offset, length))
                         mOnAsrResultListener.asrResult(nlu)

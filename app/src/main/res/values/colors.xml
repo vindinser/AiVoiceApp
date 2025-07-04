@@ -17,4 +17,6 @@
     <color name="colorVoiceSetting">#FCA39A</color>
     <color name="colorSystemSetting">#464646</color>
     <color name="colorDeveloper">#CF2A02</color>
+
+    <color name="colorWindowBg">#37000000</color>
 </resources>

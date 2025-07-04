@@ -2,6 +2,7 @@ package com.zs.lib_base.service
 
 import android.app.IntentService
 import android.content.Intent
+import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_base.utils.SpUtils
 
@@ -25,6 +26,9 @@ class InitService: IntentService(InitService::class.simpleName) {
 
         // 初始化SP
         SpUtils.initUtils(this)
+
+        // 初始化播放（SoundPool）
+        SoundPoolHelper.init(this)
     }
 
     override fun onDestroy() {

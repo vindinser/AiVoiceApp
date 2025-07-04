@@ -23,4 +23,7 @@ interface OnAsrResultListener {
 
     // 错误
     fun voiceError(text: String)
+
+    // 更新话术
+    fun updateUserText(text: String)
 }

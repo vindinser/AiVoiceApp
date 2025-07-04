@@ -44,6 +44,9 @@ object DependenciesConfig {
 
     // 权限请求
     // const val AND_PERMISSIONS = "com.yanzhenjie:permission:2.0.2"
+
+    // lottie动画
+    const val LOTTIE = "com.airbnb.android:lottie:3.4.0"
 }
 
 // Module配置
