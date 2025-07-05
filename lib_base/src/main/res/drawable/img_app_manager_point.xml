@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- 未选中状态的颜色（灰色） -->
+    <solid android:color="#CCCCCC" />
+
+    <!-- 圆点尺寸 -->
+    <size
+        android:width="8dp"
+        android:height="8dp" />
+
+    <!-- 圆角（设置为圆形） -->
+    <corners android:radius="4dp" />
+</shape>
