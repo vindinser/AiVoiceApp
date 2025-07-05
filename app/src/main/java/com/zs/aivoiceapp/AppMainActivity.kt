@@ -13,6 +13,7 @@ import com.zs.aivoiceapp.service.VoiceService
 import com.zs.lib_base.base.BaseActivity
 import com.zs.lib_base.base.adapter.BasePagerAdapter
 import com.zs.lib_base.helper.ARouterHelper
+import com.zs.lib_base.helper.`fun`.AppHelper
 
 class AppMainActivity : BaseActivity() {
 

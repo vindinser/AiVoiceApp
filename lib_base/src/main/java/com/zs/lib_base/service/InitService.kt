@@ -3,6 +3,7 @@ package com.zs.lib_base.service
 import android.app.IntentService
 import android.content.Intent
 import com.zs.lib_base.helper.SoundPoolHelper
+import com.zs.lib_base.helper.`fun`.AppHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_base.utils.SpUtils
 
@@ -29,6 +30,9 @@ class InitService: IntentService(InitService::class.simpleName) {
 
         // 初始化播放（SoundPool）
         SoundPoolHelper.init(this)
+
+        // 初始化应用采集
+        AppHelper.init(this)
     }
 
     override fun onDestroy() {
