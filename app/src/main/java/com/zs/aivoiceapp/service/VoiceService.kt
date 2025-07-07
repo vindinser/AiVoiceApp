@@ -20,6 +20,7 @@ import com.zs.lib_base.helper.NotificationHelper
 import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.WindowHelper
 import com.zs.lib_base.helper.`fun`.AppHelper
+import com.zs.lib_base.helper.`fun`.CommonSettingHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
@@ -263,6 +264,40 @@ class VoiceService: Service(), OnNluResultListener {
     // 无法识别
     override fun nluError() {
         addAIText(WordsTools.noAnswerWords())
-        // VoiceManager.ttsStart(WordsTools.noAnswerWords())
+    }
+
+    // 返回
+    override fun back() {
+        addAIText("正在为您执行返回操作")
+        CommonSettingHelper.back()
+        hideWindow()
+    }
+
+    // 返回主页
+    override fun home() {
+        addAIText("正在为您返回主页")
+        CommonSettingHelper.home()
+        hideWindow()
+    }
+
+    // 音量+
+    override fun setVolumeUp() {
+        addAIText("已为您增加音量")
+        CommonSettingHelper.setVolumeUp()
+        hideWindow()
+    }
+
+    // 音量-
+    override fun setVolumeDown() {
+        addAIText("已为您降低音量")
+        CommonSettingHelper.setVolumeDown()
+        hideWindow()
+    }
+
+    // 退出
+    override fun quit() {
+        addAIText("只在为您执行退出操作")
+        CommonSettingHelper.quit()
+        hideWindow()
     }
 }

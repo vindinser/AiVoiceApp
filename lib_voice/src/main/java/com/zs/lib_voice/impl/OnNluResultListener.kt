@@ -15,6 +15,20 @@ interface OnNluResultListener {
     // 其他App操作（更新、下载、搜索、推荐）
     fun otherApp(appName: String)
 
+    /**
+     * =========================== 通用设置 ===========================
+     */
+    // 返回
+    fun back()
+    // 返回主页
+    fun home()
+    // 音量+
+    fun setVolumeUp()
+    // 音量-
+    fun setVolumeDown()
+    // 退出
+    fun quit()
+
     // 查询天气
     fun queryWeather()
 

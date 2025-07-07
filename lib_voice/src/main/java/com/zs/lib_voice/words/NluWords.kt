@@ -30,6 +30,10 @@ object NluWords {
     const val NUL_COFFEE = "coffee"
     // 电影
     const val NUL_MOVIE = "movie"
+    // 音量改变
+    const val INTENT_MOVIE_VOL = "CHANGE_VOL"
+
+
     // 页面控制
     const val NUL_SCREEN_CONTROL = "screen_control"
     // 电视剧
@@ -38,6 +42,8 @@ object NluWords {
     const val NUL_TAKEAWAY = "takeaway"
     // 机器人控制
     const val NUL_ROBOT = "robot"
+    // 机器人音量改变
+    const val INTENT_ROBOT_VOLUME = "ROBOT_VOLUME"
 
     // 星座
     const val NUL_CONSTELLATION = "constellation"
@@ -125,6 +131,12 @@ object NluWords {
     const val NUL_INSTRUCTION = "instruction"
     // 返回
     const val INTENT_RETURN = "RETURN"
+    // 返回主页
+    const val INTENT_BACK_HOME = "BACK_HOME"
+    // 音量+
+    const val INTENT_VOLUME_UP = "VOLUME_UP"
+    // 音量-
+    const val INTENT_VOLUME_DOWN = "VOLUME_VOLUME_DOWN"
     // 退下
     const val INTENT_QUIT = "QUIT"
 

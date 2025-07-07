@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.content.Intent
 import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.`fun`.AppHelper
+import com.zs.lib_base.helper.`fun`.CommonSettingHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_base.utils.SpUtils
 
@@ -33,6 +34,9 @@ class InitService: IntentService(InitService::class.simpleName) {
 
         // 初始化应用采集
         AppHelper.init(this)
+
+        // 初始化通用设置帮助类
+        CommonSettingHelper.init(this)
     }
 
     override fun onDestroy() {
