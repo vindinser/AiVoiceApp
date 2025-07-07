@@ -6,6 +6,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.zs.aivoiceapp.entity.AppConstants
 import com.zs.lib_base.helper.NotificationHelper
 import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.WindowHelper
+import com.zs.lib_base.helper.`fun`.AppHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
@@ -68,6 +70,7 @@ class VoiceService: Service(), OnNluResultListener {
 
             override fun wakeUpReady() {
                 L.i("唤醒准备就绪")
+                addAIText("唤醒准备就绪")
                 // VoiceManager.ttsStart("唤醒准备就绪")
             }
 
@@ -102,7 +105,7 @@ class VoiceService: Service(), OnNluResultListener {
                 L.i("====================== NLU ============================")
                 L.i("nlu：$nlu")
                 addMineText(nlu.optString("raw_text"))
-                addAIText(nlu.toString())
+                // addAIText(nlu.toString())
                 VoiceEngineAnalyze.analyzeNlu(nlu, this@VoiceService)
             }
 
@@ -124,8 +127,7 @@ class VoiceService: Service(), OnNluResultListener {
         SoundPoolHelper.play(R.raw.record_start)
         // 应答
         val wakeupText = WordsTools.wakeUpWords()
-        addAIText((wakeupText))
-        VoiceManager.ttsStart(wakeupText, object : VoiceTTS.OnTTSResultListener {
+        addAIText(wakeupText, object : VoiceTTS.OnTTSResultListener {
             override fun ttsEnd() {
                 // 启动语音识别
                 VoiceManager.startAsr()
@@ -157,11 +159,6 @@ class VoiceService: Service(), OnNluResultListener {
         }
     }
 
-    // 查询天气
-    override fun queryWeather() {
-
-    }
-
     // 显示窗口
     private fun showWindow() {
         L.i("================== 显示窗口 ====================")
@@ -190,6 +187,15 @@ class VoiceService: Service(), OnNluResultListener {
         val bean = ChatListData(AppConstants.TYPE_AI_TEXT)
         bean.text = text
         baseAddItem(bean)
+        VoiceManager.ttsStart(text)
+    }
+
+    // 添加AI的文本
+    private fun addAIText(text: String, mOnTTSResultListener: VoiceTTS.OnTTSResultListener) {
+        val bean = ChatListData(AppConstants.TYPE_AI_TEXT)
+        bean.text = text
+        baseAddItem(bean)
+        VoiceManager.ttsStart(text, mOnTTSResultListener)
     }
 
     // 添加基类
@@ -201,5 +207,62 @@ class VoiceService: Service(), OnNluResultListener {
     // 更新提示语
     private fun updateTipsText(text: String) {
         tvVoiceTips.text = text
+    }
+
+    /**
+     * ====================================== OnNluResultListener ======================================
+     */
+    // 查询天气
+    override fun queryWeather() {
+
+    }
+
+    // 打开APP
+    override fun openApp(appName: String) {
+        if(!TextUtils.isEmpty(appName)) {
+            L.i("Open App $appName")
+            val isOpen = AppHelper.lunchApp(appName)
+            if(isOpen) {
+                addAIText("正在为您打开$appName")
+                // VoiceManager.ttsStart("正在为您打开$appName")
+            } else {
+                addAIText("很抱歉，无法为您打开$appName")
+                // VoiceManager.ttsStart("很抱歉，无法为您打开$appName")
+            }
+        }
+        hideWindow()
+    }
+
+    // 卸载APP
+    override fun unInstallApp(appName: String) {
+        if(!TextUtils.isEmpty(appName)) {
+            L.i("卸载 App $appName")
+            val isUnInstall = AppHelper.unInstallApp(appName)
+            if(isUnInstall) {
+                addAIText("正在为您卸载$appName")
+            } else {
+                addAIText("很抱歉，无法为您卸载$appName")
+            }
+        }
+        hideWindow()
+    }
+
+    // 其他App操作（更新、下载、搜索、推荐）
+    override fun otherApp(appName: String) {
+        if(!TextUtils.isEmpty(appName)) {
+            val isIntent = AppHelper.launchAppStore(appName)
+            if(isIntent) {
+                addAIText("正在为您操作$appName")
+            } else {
+                nluError()
+            }
+        }
+        hideWindow()
+    }
+
+    // 无法识别
+    override fun nluError() {
+        addAIText(WordsTools.noAnswerWords())
+        // VoiceManager.ttsStart(WordsTools.noAnswerWords())
     }
 }

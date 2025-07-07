@@ -42,10 +42,46 @@ object VoiceEngineAnalyze {
         val intent = result.optString("intent")
         val slots = result.optJSONObject("slots")
 
-        when(domain) {
-            NluWords.NLU_WEATHER -> {
-                // 获取其他类型
-                // mOnNluResultListener.queryWeather()
+        slots?.let {
+            when(domain) {
+                // 打开APP
+                NluWords.NUL_APP -> {
+                    when(intent) {
+                        NluWords.INTENT_OPEN_APP,
+                        NluWords.INTENT_UNINSTALL_APP,
+                        NluWords.INTENT_UPDATE_APP,
+                        NluWords.INTENT_DOWNLOAD_APP,
+                        NluWords.INTENT_SEARCH_APP,
+                        NluWords.INTENT_RECOMMEND_APP -> {
+                            // 获取打开App的名称
+                            val userAppName = it.optJSONArray("user_app_name")
+                            userAppName?.let { appName ->
+                                if(appName.length() > 0) {
+                                    val obj = appName[0] as JSONObject
+                                    val word = obj.optString("word")
+                                    when (intent) {
+                                        // 打开APP
+                                        NluWords.INTENT_OPEN_APP -> mOnNluResultListener.openApp(word)
+                                        // 卸载APP
+                                        NluWords.INTENT_UNINSTALL_APP -> mOnNluResultListener.unInstallApp(word)
+                                        // 其他APP操作
+                                        else -> mOnNluResultListener.otherApp(word)
+                                    }
+                                } else {
+                                    mOnNluResultListener.nluError()
+                                }
+                            }
+                        }
+                        else -> mOnNluResultListener.nluError()
+                    }
+
+                }
+                NluWords.NLU_WEATHER -> {
+                    // 获取其他类型
+                    // mOnNluResultListener.queryWeather()
+                }
+
+                else -> mOnNluResultListener.nluError()
             }
         }
     }

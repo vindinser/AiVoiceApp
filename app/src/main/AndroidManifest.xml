@@ -22,6 +22,11 @@
     <!-- window -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <!-- 卸载应用权限 -->
+    <uses-permission android:name="android.permission.DELETE_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+
     <application
         android:usesCleartextTraffic="true"
         android:name="com.zs.lib_base.base.BaseApp"
