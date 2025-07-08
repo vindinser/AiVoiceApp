@@ -14,8 +14,19 @@ import com.zs.lib_base.base.BaseActivity
 import com.zs.lib_base.base.adapter.BasePagerAdapter
 import com.zs.lib_base.helper.ARouterHelper
 import com.zs.lib_base.helper.`fun`.AppHelper
+import com.zs.lib_base.helper.`fun`.ContactHelper
 
 class AppMainActivity : BaseActivity() {
+
+    // 权限
+    private val requiredPermissions = arrayOf(
+        // 麦克风
+        Manifest.permission.RECORD_AUDIO,
+        // 打电话
+        Manifest.permission.CALL_PHONE,
+        // 读取联系人
+        Manifest.permission.READ_CONTACTS,
+    )
 
     private val mList = ArrayList<MainListData>()
     private val mListView = ArrayList<View>()
@@ -38,9 +49,6 @@ class AppMainActivity : BaseActivity() {
             requestPermissionsAndPermission(requiredPermissions, object : Auction<List<String>> { startServices })
         }
         */
-        val requiredPermissions = arrayOf(
-            Manifest.permission.RECORD_AUDIO
-        )
 
         // 检查权限
         if(hasRequiredPermissions(requiredPermissions)) {
@@ -67,6 +75,10 @@ class AppMainActivity : BaseActivity() {
 
     // 启动服务
     private fun startServices() {
+
+        // 读取联系人
+        ContactHelper.init(this)
+
         // 启动语音服务
         startService(Intent(this, VoiceService::class.java))
 

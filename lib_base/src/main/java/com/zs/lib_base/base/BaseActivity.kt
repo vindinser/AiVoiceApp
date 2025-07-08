@@ -26,7 +26,7 @@ abstract class BaseActivity: ComponentActivity() {
         }
     }
 
-    protected val codeWindowRequest = 1000
+    private val codeWindowRequest = 1000
 
     // 获取布局ID
     abstract fun getLayoutId(): Int
@@ -134,6 +134,18 @@ abstract class BaseActivity: ComponentActivity() {
     protected fun checkPermission(permission: String): Boolean {
         if(checkGreaterThanM()) {
             return checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED
+        }
+        return true
+    }
+
+    // 检查权限（多个）
+    protected fun checkPermission(permission: Array<String>): Boolean {
+        if(checkGreaterThanM()) {
+            permission.forEach {
+                if(checkSelfPermission(it) == PackageManager.PERMISSION_DENIED) {
+                    return false
+                }
+            }
         }
         return true
     }

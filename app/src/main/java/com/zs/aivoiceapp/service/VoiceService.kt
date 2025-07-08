@@ -21,6 +21,7 @@ import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.WindowHelper
 import com.zs.lib_base.helper.`fun`.AppHelper
 import com.zs.lib_base.helper.`fun`.CommonSettingHelper
+import com.zs.lib_base.helper.`fun`.ContactHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
@@ -296,8 +297,31 @@ class VoiceService: Service(), OnNluResultListener {
 
     // 退出
     override fun quit() {
-        addAIText("只在为您执行退出操作")
+        addAIText("正在为您执行退出操作")
         CommonSettingHelper.quit()
         hideWindow()
+    }
+
+    // 拨打电话（通讯录联系人）
+    override fun callPhoneForName(name: String) {
+        val list = ContactHelper.mContactList.filter { it.phoneName == name }
+        if(list.isNotEmpty()) {
+            addAIText("正在为您拨打${ name }的电话", object : VoiceTTS.OnTTSResultListener{
+                override fun ttsEnd() {
+                    ContactHelper.callPhone(list[0].phoneNumber)
+                }
+            })
+        } else {
+            addAIText("并未在通讯录中找到${ name }的电话")
+        }
+    }
+
+    // 拨打电话（电话号码）
+    override fun callPhoneForNumber(number: String) {
+        addAIText("正在为您拨打电话：${ number }", object : VoiceTTS.OnTTSResultListener {
+            override fun ttsEnd() {
+                ContactHelper.callPhone(number)
+            }
+        })
     }
 }
