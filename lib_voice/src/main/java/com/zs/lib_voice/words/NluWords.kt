@@ -126,6 +126,7 @@ object NluWords {
 
     // 搜索
     const val NUL_SEARCH = "search"
+    const val INTENT_SEARCH = "INTENT_SEARCH"
 
     // 通用设置
     const val NUL_INSTRUCTION = "instruction"
@@ -142,6 +143,7 @@ object NluWords {
 
     // 小说
     const val NUL_NOVEL= "novel"
+    const val INTENT_SEARCH_NOVEL= "SEARCH_NOVEL"
 
     // 笑话
     const val NUL_JOKE = "joke"

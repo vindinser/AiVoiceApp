@@ -162,6 +162,31 @@ object VoiceEngineAnalyze {
                         else -> mOnNluResultListener.nluError()
                     }
                 }
+                // 笑话
+                NluWords.NUL_JOKE -> {
+                    when(intent) {
+                        // 讲笑话
+                        NluWords.INTENT_TELL_JOKE -> mOnNluResultListener.tellJoke()
+                        // 获取笑话列表
+                        NluWords.INTENT_SEARCH_JOKE -> mOnNluResultListener.jokeList()
+
+                        else -> mOnNluResultListener.nluError()
+                    }
+                }
+                // 搜索
+                NluWords.NUL_SEARCH -> {
+                    when(intent) {
+                        NluWords.INTENT_SEARCH -> mOnNluResultListener.jokeList()
+                        else -> mOnNluResultListener.nluError()
+                    }
+                }
+                // 小说
+                NluWords.NUL_NOVEL -> {
+                    when(intent) {
+                        NluWords.INTENT_SEARCH_NOVEL -> mOnNluResultListener.jokeList()
+                        else -> mOnNluResultListener.nluError()
+                    }
+                }
 
                 NluWords.NLU_WEATHER -> {
                     // 获取其他类型

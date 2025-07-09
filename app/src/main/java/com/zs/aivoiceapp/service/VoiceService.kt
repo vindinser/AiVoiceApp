@@ -16,6 +16,7 @@ import com.zs.aivoiceapp.R
 import com.zs.aivoiceapp.adapter.ChatListAdapter
 import com.zs.aivoiceapp.data.ChatListData
 import com.zs.aivoiceapp.entity.AppConstants
+import com.zs.lib_base.helper.ARouterHelper
 import com.zs.lib_base.helper.NotificationHelper
 import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.WindowHelper
@@ -23,6 +24,8 @@ import com.zs.lib_base.helper.`fun`.AppHelper
 import com.zs.lib_base.helper.`fun`.CommonSettingHelper
 import com.zs.lib_base.helper.`fun`.ContactHelper
 import com.zs.lib_base.utils.L
+import com.zs.lib_network.HttpManager
+import com.zs.lib_network.bean.JokeOneData
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
 import com.zs.lib_voice.impl.OnNluResultListener
@@ -30,6 +33,9 @@ import com.zs.lib_voice.manager.VoiceManager
 import com.zs.lib_voice.tts.VoiceTTS
 import com.zs.lib_voice.words.WordsTools
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * 语音服务
@@ -323,5 +329,44 @@ class VoiceService: Service(), OnNluResultListener {
                 ContactHelper.callPhone(number)
             }
         })
+    }
+
+    // 播放笑话
+    override fun tellJoke() {
+        HttpManager.queryJoke(object : Callback<JokeOneData> {
+            override fun onResponse(call: Call<JokeOneData>, response: Response<JokeOneData>) {
+                if(response.isSuccessful) {
+                    response.body()?.let {
+                        if(it.error_code == 0) {
+                            // 查询到笑话 根据result随机播放笑话
+                            val radomInt = WordsTools.radomInt(it.result.size)
+                            if(radomInt < it.result.size) {
+                                val result = it.result[radomInt]
+                                addAIText(result.content, object : VoiceTTS.OnTTSResultListener {
+                                    override fun ttsEnd() {
+                                        hideWindow()
+                                    }
+                                })
+                            }
+                        } else {
+                            addAIText("很抱歉，没有为您查询到笑话")
+                        }
+                    }
+                } else {
+                    addAIText("很抱歉，没有为您查询到笑话")
+                }
+            }
+
+            override fun onFailure(call: Call<JokeOneData>, t: Throwable) {
+                addAIText("很抱歉，没有为您查询到笑话")
+            }
+        })
+    }
+
+    // 笑话列表
+    override fun jokeList() {
+        addAIText("正在为您搜索笑话")
+        ARouterHelper.startActivity(ARouterHelper.PATH_JOKE)
+        hideWindow()
     }
 }

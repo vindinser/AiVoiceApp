@@ -44,4 +44,11 @@ object WordsTools {
     fun noSupportWords(): String {
         return radomArray(noSupportArray)
     }
+
+    /**
+     * 对给定的证书进行随机值
+     */
+    fun radomInt(maxSize: Int): Int {
+        return Random.nextInt(maxSize)
+    }
 }

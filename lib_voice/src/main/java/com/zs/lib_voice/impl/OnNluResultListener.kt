@@ -37,6 +37,14 @@ interface OnNluResultListener {
     // 拨打电话（号码）
     fun callPhoneForNumber(number: String)
 
+    /**
+     * =========================== 笑话相关 ===========================
+     */
+    // 播放笑话
+    fun tellJoke()
+    // 笑话列表
+    fun jokeList()
+
     // 查询天气
     fun queryWeather()
 
