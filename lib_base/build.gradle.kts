@@ -63,6 +63,11 @@ dependencies {
     // lottie动画
     api(DependenciesConfig.LOTTIE)
 
+    // SmartRefreshLayout
+    api(DependenciesConfig.SMART_REFRESH_LAYOUT)
+    api(DependenciesConfig.SMART_REFRESH_LAYOUT_HEADER)
+    api(DependenciesConfig.SMART_REFRESH_LAYOUT_FOOTER)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

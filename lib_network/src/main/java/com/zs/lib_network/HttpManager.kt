@@ -18,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object HttpManager {
 
+    const val PAGE_SIZE = 20;
+
     // 拦截器
     private fun getClient(): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor(HttpInterceptor()).build()
@@ -46,8 +48,8 @@ object HttpManager {
     }
 
     // 查询笑话列表
-    fun queryJokeList(page: Int, pageSize: Int,  callback: Callback<JokeListData>) {
-        apiJoke.queryJokeList(page, pageSize, HttpKey.JOKE_KEY).enqueue(callback)
+    fun queryJokeList(page: Int, callback: Callback<JokeListData>) {
+        apiJoke.queryJokeList(page, PAGE_SIZE, HttpKey.JOKE_KEY).enqueue(callback)
     }
 
 

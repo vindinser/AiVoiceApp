@@ -10,7 +10,7 @@ data class JokeListData(
 )
 
 data class Results(
-    val `data`: List<Results>
+    val `data`: List<Data>
 )
 
 data class Data(

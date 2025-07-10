@@ -47,6 +47,11 @@ object DependenciesConfig {
 
     // lottie动画
     const val LOTTIE = "com.airbnb.android:lottie:3.4.0"
+
+    // SmartRefreshLayout
+    const val SMART_REFRESH_LAYOUT = "io.github.scwang90:refresh-layout-kernel:3.0.0-alpha" // 核心依赖
+    const val SMART_REFRESH_LAYOUT_HEADER = "io.github.scwang90:refresh-header-classics:3.0.0-alpha" // 经典刷新头
+    const val SMART_REFRESH_LAYOUT_FOOTER = "io.github.scwang90:refresh-footer-classics:3.0.0-alpha" // 经典加载
 }
 
 // Module配置
