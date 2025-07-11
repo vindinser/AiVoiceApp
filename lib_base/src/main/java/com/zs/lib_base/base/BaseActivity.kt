@@ -2,17 +2,21 @@ package com.zs.lib_base.base
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
-abstract class BaseActivity: ComponentActivity() {
+abstract class BaseActivity: AppCompatActivity() {
 
     // 权限请求器
     private val permissionLauncher = registerForActivityResult(
@@ -45,8 +49,20 @@ abstract class BaseActivity: ComponentActivity() {
         // enableEdgeToEdge()
         setContentView(getLayoutId())
 
+        // 状态栏适配（API 23+）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.run {
+                statusBarColor = Color.TRANSPARENT
+                decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            }
+        }
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            actionBar?.let {
+            // actionBar?.let {
+            supportActionBar?.let {
                 // 标题
                 it.title = getTitleText()
                 // 是否显示返回键
@@ -56,6 +72,8 @@ abstract class BaseActivity: ComponentActivity() {
                 it.setIcon(null)
                 // 透明度
                 it.elevation = 0f
+                // 设置自定义背景色（避免黑色背景）
+                // it.setBackgroundDrawable(ColorDrawable(Color.WHITE))
             }
         }
 

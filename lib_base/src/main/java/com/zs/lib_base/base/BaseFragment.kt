@@ -15,7 +15,7 @@ abstract class BaseFragment: Fragment() {
     abstract fun getLayoutId(): Int
 
     // 初始化
-    abstract fun initView()
+    abstract fun initView(view: View)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +27,6 @@ abstract class BaseFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initView(view)
     }
 }

@@ -45,6 +45,14 @@ interface OnNluResultListener {
     // 笑话列表
     fun jokeList()
 
+    /**
+     * =========================== 星座相关 ===========================
+     */
+    // 星座时间
+    fun consTellTime(name: String)
+    // 星座信息
+    fun consTellInfo(name: String)
+
     // 查询天气
     fun queryWeather()
 

@@ -46,11 +46,11 @@ object NluWords {
     const val INTENT_ROBOT_VOLUME = "ROBOT_VOLUME"
 
     // 星座
-    const val NUL_CONSTELLATION = "constellation"
+    const val NUL_CONSTELLATION = "constell"
     // 查看星座时间
-    const val INTENT_CONSTELLATION_TIME = "CONSTELLATION_TIME"
+    const val INTENT_CONSTELLATION_TIME = "CONSTELL_TIME"
     // 查看星座信息
-    const val NUL_CONSTELLATION_INFO = "CONSTELLATION_INFO"
+    const val INTENT_CONSTELLATION_INFO = "CONSTELL_INFO"
 
     // 属性
     const val NUL_ZODIAC = "zodiac"

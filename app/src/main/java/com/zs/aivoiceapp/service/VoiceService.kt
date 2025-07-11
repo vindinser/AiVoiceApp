@@ -22,6 +22,7 @@ import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.WindowHelper
 import com.zs.lib_base.helper.`fun`.AppHelper
 import com.zs.lib_base.helper.`fun`.CommonSettingHelper
+import com.zs.lib_base.helper.`fun`.ConsTellHelper
 import com.zs.lib_base.helper.`fun`.ContactHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_network.HttpManager
@@ -368,5 +369,25 @@ class VoiceService: Service(), OnNluResultListener {
         addAIText("正在为您搜索笑话")
         ARouterHelper.startActivity(ARouterHelper.PATH_JOKE)
         hideWindow()
+    }
+
+    // 星座时间
+    override fun consTellTime(name: String) {
+        val text = ConsTellHelper.getConsTellTime(name)
+        addAIText(text, object : VoiceTTS.OnTTSResultListener {
+            override fun ttsEnd() {
+                hideWindow()
+            }
+        })
+    }
+
+    // 星座信息
+    override fun consTellInfo(name: String) {
+        addAIText("正在为您搜索${ name }信息", object : VoiceTTS.OnTTSResultListener {
+            override fun ttsEnd() {
+                ARouterHelper.startActivity(ARouterHelper.PATH_CONSTELLATION, "name", name)
+                hideWindow()
+            }
+        })
     }
 }

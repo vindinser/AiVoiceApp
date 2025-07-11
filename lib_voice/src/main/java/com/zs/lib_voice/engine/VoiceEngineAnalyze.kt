@@ -187,6 +187,26 @@ object VoiceEngineAnalyze {
                         else -> mOnNluResultListener.nluError()
                     }
                 }
+                // 星座
+                NluWords.NUL_CONSTELLATION -> {
+                    val consTellNameArray = slots.optJSONArray("user_constell_name")
+                    consTellNameArray?.let { consTell ->
+                        if(consTell.length() > 0) {
+                            val wordObject = consTell[0] as JSONObject
+                            val word = wordObject.optString("word")
+
+                            when(intent) {
+                                // 查看星座时间
+                                NluWords.INTENT_CONSTELLATION_TIME -> mOnNluResultListener.consTellTime(word)
+                                // 查看星座信息（运势）
+                                NluWords.INTENT_CONSTELLATION_INFO -> mOnNluResultListener.consTellInfo(word)
+                                else -> mOnNluResultListener.nluError()
+                            }
+                        } else {
+                            mOnNluResultListener.nluError()
+                        }
+                    }
+                }
 
                 NluWords.NLU_WEATHER -> {
                     // 获取其他类型

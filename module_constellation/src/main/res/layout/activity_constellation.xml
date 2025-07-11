@@ -1,21 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
 
-        <TextView
-            android:textSize="50sp"
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+        <!-- 标题栏 -->
+        <LinearLayout
+            android:id="@+id/mLlContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello Constellation!" />
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/mTvToday"
+                style="@style/ConstellationTextStyle"
+                android:text="今天" />
+
+            <TextView
+                android:id="@+id/mTvTomorrow"
+                style="@style/ConstellationTextStyle"
+                android:text="明天" />
+
+            <TextView
+                android:id="@+id/mTvWeek"
+                style="@style/ConstellationTextStyle"
+                android:text="本周" />
+
+            <TextView
+                android:id="@+id/mTvMonth"
+                style="@style/ConstellationTextStyle"
+                android:text="本月" />
+
+            <TextView
+                android:id="@+id/mTvYear"
+                style="@style/ConstellationTextStyle"
+                android:text="本年" />
+
+
+        </LinearLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/mViewPager"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

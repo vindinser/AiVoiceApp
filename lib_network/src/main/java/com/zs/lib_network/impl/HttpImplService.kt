@@ -2,6 +2,10 @@ package com.zs.lib_network.impl
 
 import com.zs.lib_network.bean.JokeListData
 import com.zs.lib_network.bean.JokeOneData
+import com.zs.lib_network.bean.MonthData
+import com.zs.lib_network.bean.TodayData
+import com.zs.lib_network.bean.WeekData
+import com.zs.lib_network.bean.YearData
 import com.zs.lib_network.http.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -24,6 +28,44 @@ interface HttpImplService {
         @Query("pagesize") pageSize: Int,
         @Query("key") key: String
     ): Call<JokeListData>
+
+    /**
+     * 星座
+     */
+    @GET(HttpUrl.CONSTELLATION_AUCTION)
+    fun queryTodayConsTellInfo(
+        @Query("consName") consName: String,
+        @Query("type") type: String,
+        @Query("key") key: String
+    ): Call<TodayData>
+
+    @GET(HttpUrl.CONSTELLATION_AUCTION)
+    fun queryTomorrowConsTellInfo(
+        @Query("consName") consName: String,
+        @Query("type") type: String,
+        @Query("key") key: String
+    ): Call<TodayData>
+
+    @GET(HttpUrl.CONSTELLATION_AUCTION)
+    fun queryWeekConsTellInfo(
+        @Query("consName") consName: String,
+        @Query("type") type: String,
+        @Query("key") key: String
+    ): Call<WeekData>
+
+    @GET(HttpUrl.CONSTELLATION_AUCTION)
+    fun queryMonthConsTellInfo(
+        @Query("consName") consName: String,
+        @Query("type") type: String,
+        @Query("key") key: String
+    ): Call<MonthData>
+
+    @GET(HttpUrl.CONSTELLATION_AUCTION)
+    fun queryYearConsTellInfo(
+        @Query("consName") consName: String,
+        @Query("type") type: String,
+        @Query("key") key: String
+    ): Call<YearData>
 
     @GET(HttpUrl.WEATHER_ACTION)
     fun getWeather(@Query("city") city: String, @Query("key") key: String): Call<ResponseBody>

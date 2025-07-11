@@ -67,4 +67,35 @@
         <!-- 安智市场 -->
         <item>com.goapk.market</item>
     </array>
+
+    <!-- 星座 -->
+    <array name="ConsTellArray">
+        <item>双子座</item>
+        <item>巨蟹座</item>
+        <item>狮子座</item>
+        <item>处女座</item>
+        <item>天秤座</item>
+        <item>天蝎座</item>
+        <item>射手座</item>
+        <item>摩羯座</item>
+        <item>水瓶座</item>
+        <item>双鱼座</item>
+        <item>白羊座</item>
+        <item>金牛座</item>
+    </array>
+    <!-- 星座时间 -->
+    <array name="ConsTellTimeArray">
+        <item>05月21日至06月21日，象征着智慧</item>
+        <item>06月22日至07月22日，象征着坚强</item>
+        <item>07月23日至08月22日，象征着权利</item>
+        <item>08月23日至09月22日，象征着美丽</item>
+        <item>09月23日至10月23日，象征着平衡</item>
+        <item>10月24日至11月22日，象征着神秘</item>
+        <item>11月23日至12月21日，象征着坦率</item>
+        <item>12月22日至01月19日，象征着坚韧</item>
+        <item>01月20日至02月18日，象征着叛逆</item>
+        <item>02月19日至03月20日，象征着复杂</item>
+        <item>03月21日至04月19日，象征着新的开始</item>
+        <item>04月20日至05月20日，象征着力量</item>
+    </array>
 </resources>
