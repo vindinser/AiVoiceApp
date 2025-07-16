@@ -23,6 +23,14 @@ object HttpUrl {
     // 查询星座运势
     const val CONSTELLATION_AUCTION = "constellation/getAll"
 
+    /**
+     * 机器人
+     */
+    // baseurl
+    const val ROBOT_BASE_URL = "http://openapi.turingapi.com/"
+    // 机器人对话
+    const val ROBOT_AUCTION = "openapi/api/v2"
+
     // 天气
     const val WEATHER_BASE_URL = "http://apis.juhe.cn/"
     const val WEATHER_ACTION = "simpleWeather/query"

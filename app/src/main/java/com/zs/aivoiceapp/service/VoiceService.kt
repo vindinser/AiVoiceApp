@@ -27,6 +27,7 @@ import com.zs.lib_base.helper.`fun`.ContactHelper
 import com.zs.lib_base.utils.L
 import com.zs.lib_network.HttpManager
 import com.zs.lib_network.bean.JokeOneData
+import com.zs.lib_network.bean.RobotData
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
 import com.zs.lib_voice.impl.OnNluResultListener
@@ -387,6 +388,36 @@ class VoiceService: Service(), OnNluResultListener {
             override fun ttsEnd() {
                 ARouterHelper.startActivity(ARouterHelper.PATH_CONSTELLATION, "name", name)
                 hideWindow()
+            }
+        })
+    }
+
+    // 机器人对话
+    override fun aiRobot(text: String) {
+        // 请求机器人回答
+        HttpManager.aiRobotChat(text, object : Callback<RobotData> {
+            override fun onResponse(call: Call<RobotData>, response: Response<RobotData>) {
+                if(response.isSuccessful) {
+                    response.body()?.let {
+                        if(it.intent.code == 0) {
+                            // 回答
+                            if(it.results.isEmpty()) {
+                                nluError()
+                            } else {
+                                it.results[0].values.get("text")?.let { resText ->
+                                    addAIText(resText)
+                                    hideWindow()
+                                }
+                            }
+                        } else {
+                            nluError()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<RobotData>, t: Throwable) {
+                nluError()
             }
         })
     }

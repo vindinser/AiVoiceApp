@@ -30,7 +30,7 @@ object VoiceEngineAnalyze {
             // 存在多条情况
             analyzeNluSingle(result[0] as JSONObject)
         } else {
-            return
+            mOnNluResultListener.aiRobot(rawText)
         }
     }
 

@@ -3,6 +3,7 @@ package com.zs.lib_network
 import com.zs.lib_network.bean.JokeListData
 import com.zs.lib_network.bean.JokeOneData
 import com.zs.lib_network.bean.MonthData
+import com.zs.lib_network.bean.RobotData
 import com.zs.lib_network.bean.TodayData
 import com.zs.lib_network.bean.WeekData
 import com.zs.lib_network.bean.YearData
@@ -10,10 +11,14 @@ import com.zs.lib_network.http.HttpKey
 import com.zs.lib_network.http.HttpUrl
 import com.zs.lib_network.impl.HttpImplService
 import com.zs.lib_network.interceptor.HttpInterceptor
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -22,7 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object HttpManager {
 
-    const val PAGE_SIZE = 20;
+    private const val PAGE_SIZE = 20
+    const val JSON = "content-type: application/json;charset=UTF-8"
 
     // 拦截器
     private fun getClient(): OkHttpClient {
@@ -96,6 +102,48 @@ object HttpManager {
     // 查询星座信息 - 本年
     fun queryYearConsTell(name: String, callback: Callback<YearData>) {
         apiConsTell.queryYearConsTellInfo(name, "year", HttpKey.CONSTELLATION_KEY).enqueue(callback)
+    }
+
+    /**
+     * =========================== 机器人相关 ===========================
+     */
+    // 机器人对象
+    private val retrofitAiRobot by lazy {
+        Retrofit.Builder()
+            .client(getClient())
+            .baseUrl(HttpUrl.ROBOT_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // 机器人接口对象
+    private val apiRobot by lazy {
+        retrofitAiRobot.create(HttpImplService::class.java)
+    }
+
+    // 机器人对话
+    fun aiRobotChat(text: String, callback: Callback<RobotData>) {
+        val jsonObject = JSONObject()
+        jsonObject.put("reqType", 0)
+
+        val perception = JSONObject()
+
+        val inputText = JSONObject()
+        inputText.put("text", text)
+
+        perception.put("inputText", inputText)
+
+        jsonObject.put("perception", perception)
+
+        val userInfo = JSONObject()
+        userInfo.put("apiKey", HttpKey.ROBOT_KEY)
+        userInfo.put("userId", "AIVOICE")
+
+        jsonObject.put("userInfo", userInfo)
+
+        val body = RequestBody.create(JSON.toMediaTypeOrNull(), jsonObject.toString())
+
+        apiRobot.aiRobot(body).enqueue(callback)
     }
 
 

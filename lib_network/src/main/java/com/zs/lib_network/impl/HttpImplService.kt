@@ -1,15 +1,21 @@
 package com.zs.lib_network.impl
 
+import com.zs.lib_network.HttpManager
 import com.zs.lib_network.bean.JokeListData
 import com.zs.lib_network.bean.JokeOneData
 import com.zs.lib_network.bean.MonthData
+import com.zs.lib_network.bean.RobotData
 import com.zs.lib_network.bean.TodayData
 import com.zs.lib_network.bean.WeekData
 import com.zs.lib_network.bean.YearData
 import com.zs.lib_network.http.HttpUrl
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -66,6 +72,13 @@ interface HttpImplService {
         @Query("type") type: String,
         @Query("key") key: String
     ): Call<YearData>
+
+    /**
+     * 机器人
+     */
+    @Headers(HttpManager.JSON)
+    @POST(HttpUrl.ROBOT_AUCTION)
+    fun aiRobot(@Body requestBody: RequestBody) : Call<RobotData>
 
     @GET(HttpUrl.WEATHER_ACTION)
     fun getWeather(@Query("city") city: String, @Query("key") key: String): Call<ResponseBody>
