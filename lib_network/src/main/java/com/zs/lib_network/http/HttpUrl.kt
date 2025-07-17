@@ -31,7 +31,11 @@ object HttpUrl {
     // 机器人对话
     const val ROBOT_AUCTION = "openapi/api/v2"
 
-    // 天气
+    /**
+     * 天气
+     */
+    // baseurl
     const val WEATHER_BASE_URL = "http://apis.juhe.cn/"
+    // 根据城市查询天气
     const val WEATHER_ACTION = "simpleWeather/query"
 }

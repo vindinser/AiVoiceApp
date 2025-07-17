@@ -28,6 +28,7 @@ import com.zs.lib_base.utils.L
 import com.zs.lib_network.HttpManager
 import com.zs.lib_network.bean.JokeOneData
 import com.zs.lib_network.bean.RobotData
+import com.zs.lib_network.bean.WeatherData
 import com.zs.lib_voice.engine.VoiceEngineAnalyze
 import com.zs.lib_voice.impl.OnAsrResultListener
 import com.zs.lib_voice.impl.OnNluResultListener
@@ -208,6 +209,31 @@ class VoiceService: Service(), OnNluResultListener {
         VoiceManager.ttsStart(text, mOnTTSResultListener)
     }
 
+    /**
+     * 添加天气AI文本
+     * @param {string} city 城市
+     * @param {string} info 天气类型
+     * @param {string} wid 天气类型
+     * @param {string} temperature 温度
+     */
+    private fun addWeatherText(
+        city: String,
+        info: String,
+        wid: String,
+        temperature: String,
+        mOnTTSResultListener: VoiceTTS.OnTTSResultListener
+    ) {
+        val bean = ChatListData(AppConstants.TYPE_WEATHER_TEXT)
+        bean.city = city
+        bean.info = info
+        bean.wid = wid
+        bean.temperature = temperature
+        baseAddItem(bean)
+
+        val text = "${ city }的天气为${ info }，温度为${ temperature }"
+        VoiceManager.ttsStart(text, mOnTTSResultListener)
+    }
+
     // 添加基类
     private fun baseAddItem(bean: ChatListData) {
         mList.add(bean)
@@ -222,10 +248,6 @@ class VoiceService: Service(), OnNluResultListener {
     /**
      * ====================================== OnNluResultListener ======================================
      */
-    // 查询天气
-    override fun queryWeather() {
-
-    }
 
     // 打开APP
     override fun openApp(appName: String) {
@@ -420,5 +442,46 @@ class VoiceService: Service(), OnNluResultListener {
                 nluError()
             }
         })
+    }
+
+    // 查询天气
+    override fun queryWeather(city: String) {
+        HttpManager.run {
+            queryWeather(city, object : Callback<WeatherData> {
+                override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
+                    if(response.isSuccessful) {
+                        response.body()?.let {
+                            it.result.realtime.apply {
+                                // 再UI上展示
+                                addWeatherText(
+                                    city,
+                                    wid,
+                                    info,
+                                    temperature,
+                                    object : VoiceTTS.OnTTSResultListener {
+                                        override fun ttsEnd() {
+                                            hideWindow()
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    } else {
+                        nluError()
+                    }
+                }
+
+                override fun onFailure(call: Call<WeatherData>, t: Throwable) {
+                    nluError()
+                }
+            })
+        }
+    }
+
+    // 天气详情
+    override fun queryWeatherInfo(city: String) {
+        addAIText("正在为你查询${ city }天气详情")
+        ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER, "city", city)
+        hideWindow()
     }
 }

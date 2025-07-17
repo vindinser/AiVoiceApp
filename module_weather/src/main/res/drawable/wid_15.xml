@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- wid_15.xml 中雪 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FF757575"
+        android:pathData="M20,12C22,11 23,9 23,7 23,5 22,3 20,3 20,1 17,-1 15,-1 13,-1 11,0 10,1 9,0 7,-1 5,-1 3,-1 1,1 1,3 1,5 2,7 4,7 4,9 5,11 7,11Z"/>
+    <!-- 雪花符号 -->
+    <path
+        android:strokeColor="#FFE3F2FD"
+        android:strokeWidth="1"
+        android:pathData="M9,15L9,18M8,16.5L10,16.5M8.5,15.5L9.5,17.5M8.5,17.5L9.5,15.5"/>
+    <path
+        android:strokeColor="#FFE3F2FD"
+        android:strokeWidth="1"
+        android:pathData="M15,16L15,19M14,17.5L16,17.5M14.5,16.5L15.5,18.5M14.5,18.5L15.5,16.5"/>
+</vector>

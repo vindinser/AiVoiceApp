@@ -5,6 +5,7 @@ import com.zs.aivoiceapp.data.ChatListData
 import com.zs.aivoiceapp.entity.AppConstants
 import com.zs.lib_base.base.adapter.CommonAdapter
 import com.zs.lib_base.base.adapter.CommonViewHolder
+import com.zs.module_weather.tools.WeatherIconTools
 
 /**
  * 对话列表适配器
@@ -25,7 +26,12 @@ class ChatListAdapter(
             AppConstants.TYPE_CONSTELLATION_TEXT -> {}
             AppConstants.TYPE_JOKE_TEXT -> {}
             AppConstants.TYPE_MAP_TEXT -> {}
-            AppConstants.TYPE_WEATHER_TEXT -> {}
+            AppConstants.TYPE_WEATHER_TEXT -> {
+                viewHolder.setText(R.id.mTv_city, model.city)
+                viewHolder.setText(R.id.mTv_info, model.info)
+                viewHolder.setText(R.id.mTv_temperature, model.temperature)
+                viewHolder.setImageResource(R.id.iv_icon, WeatherIconTools.getIcon(model.wid))
+            }
             else -> {
 
             }

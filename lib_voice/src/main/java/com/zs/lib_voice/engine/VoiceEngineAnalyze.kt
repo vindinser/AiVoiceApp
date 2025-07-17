@@ -207,10 +207,22 @@ object VoiceEngineAnalyze {
                         }
                     }
                 }
-
+                // 天气
                 NluWords.NLU_WEATHER -> {
-                    // 获取其他类型
-                    // mOnNluResultListener.queryWeather()
+                    val userLocal = slots.optJSONArray("user_local")
+                    userLocal?.let { local ->
+                        if(local.length() > 0) {
+                            val localObj = local[0] as JSONObject
+                            val word = localObj.optString("word")
+                            when(intent) {
+                                NluWords.INTENT_USER_WEATHER -> mOnNluResultListener.queryWeather(word)
+                                else -> mOnNluResultListener.queryWeatherInfo(word)
+                            }
+
+                        } else {
+                            mOnNluResultListener.nluError()
+                        }
+                    }
                 }
 
                 else -> mOnNluResultListener.nluError()

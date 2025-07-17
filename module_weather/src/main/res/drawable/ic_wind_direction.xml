@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- 指南针底座改为路径表示 -->
+    <path
+        android:fillColor="#FFF5F5F5"
+        android:strokeColor="#FF2196F3"
+        android:strokeWidth="1"
+        android:pathData="M12,12a9,9 0,1 1,0-0.1z"/>
+
+    <!-- 方向指针 (北) -->
+    <path
+        android:fillColor="#FFF44336"
+        android:pathData="M12,4L14,8L10,8L12,4Z"/>
+
+    <!-- 方向指示器 -->
+    <path
+        android:strokeColor="#FF2196F3"
+        android:strokeWidth="1.5"
+        android:pathData="M12,11L12,17M12,11L9,14M12,11L15,14"
+        android:strokeLineCap="round"/>
+</vector>

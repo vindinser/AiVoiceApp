@@ -6,6 +6,7 @@ import com.zs.lib_network.bean.JokeOneData
 import com.zs.lib_network.bean.MonthData
 import com.zs.lib_network.bean.RobotData
 import com.zs.lib_network.bean.TodayData
+import com.zs.lib_network.bean.WeatherData
 import com.zs.lib_network.bean.WeekData
 import com.zs.lib_network.bean.YearData
 import com.zs.lib_network.http.HttpUrl
@@ -80,6 +81,9 @@ interface HttpImplService {
     @POST(HttpUrl.ROBOT_AUCTION)
     fun aiRobot(@Body requestBody: RequestBody) : Call<RobotData>
 
+    /**
+     * 天气
+     */
     @GET(HttpUrl.WEATHER_ACTION)
-    fun getWeather(@Query("city") city: String, @Query("key") key: String): Call<ResponseBody>
+    fun getWeather(@Query("city") city: String, @Query("key") key: String): Call<WeatherData>
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- 太阳 -->
+    <path
+        android:fillColor="#FFFFC107"
+        android:pathData="M12,12m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"/>
+    <!-- 光线 -->
+    <path
+        android:strokeColor="#FFFFC107"
+        android:strokeWidth="1.5"
+        android:pathData="M12,4L12,6M12,18L12,20M4,12L6,12M18,12L20,12M5.64,5.64L7.05,7.05M16.95,16.95L18.36,18.36M5.64,18.36L7.05,16.95M16.95,7.05L18.36,5.64"
+        android:strokeLineCap="round"/>
+</vector>

@@ -5,6 +5,7 @@ import com.zs.lib_network.bean.JokeOneData
 import com.zs.lib_network.bean.MonthData
 import com.zs.lib_network.bean.RobotData
 import com.zs.lib_network.bean.TodayData
+import com.zs.lib_network.bean.WeatherData
 import com.zs.lib_network.bean.WeekData
 import com.zs.lib_network.bean.YearData
 import com.zs.lib_network.http.HttpKey
@@ -164,8 +165,8 @@ object HttpManager {
         retrofitWeather.create(HttpImplService::class.java)
     }
 
-    // 查询天气
-    fun queryWeather(city: String): Call<ResponseBody> {
-        return apiWeather.getWeather(city, HttpKey.WEATHER_KEY)
+    // 根据城市查询天气
+    fun queryWeather(city: String, callback: Callback<WeatherData>) {
+        return apiWeather.getWeather(city, HttpKey.WEATHER_KEY).enqueue(callback)
     }
 }
