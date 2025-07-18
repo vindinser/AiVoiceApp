@@ -16,6 +16,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // maven { setUrl("https://jitpack.io") } 函数式调用所以使用setUrl
+        maven { setUrl("https://jitpack.io") }
     }
 }
 

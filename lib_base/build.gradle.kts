@@ -68,6 +68,9 @@ dependencies {
     api(DependenciesConfig.SMART_REFRESH_LAYOUT_HEADER)
     api(DependenciesConfig.SMART_REFRESH_LAYOUT_FOOTER)
 
+    // 图表
+    api(DependenciesConfig.CHART)
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }
