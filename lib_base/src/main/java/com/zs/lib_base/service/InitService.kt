@@ -6,6 +6,7 @@ import com.zs.lib_base.helper.SoundPoolHelper
 import com.zs.lib_base.helper.`fun`.AppHelper
 import com.zs.lib_base.helper.`fun`.CommonSettingHelper
 import com.zs.lib_base.helper.`fun`.ConsTellHelper
+import com.zs.lib_base.utils.AssetsUtil
 import com.zs.lib_base.utils.L
 import com.zs.lib_base.utils.SpUtils
 
@@ -41,6 +42,9 @@ class InitService: IntentService(InitService::class.simpleName) {
 
         // 初始化星座帮助类
         ConsTellHelper.init(this)
+
+        // 初始化 Assets 工具
+        AssetsUtil.initUntil(this)
     }
 
     override fun onDestroy() {

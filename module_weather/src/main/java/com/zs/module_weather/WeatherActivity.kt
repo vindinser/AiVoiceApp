@@ -1,8 +1,12 @@
 package com.zs.module_weather
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +23,7 @@ import com.zs.lib_base.helper.ARouterHelper
 import com.zs.lib_network.HttpManager
 import com.zs.lib_network.bean.WeatherData
 import com.zs.module_weather.tools.WeatherIconTools
+import com.zs.module_weather.ui.CitySelectActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +37,8 @@ class WeatherActivity: BaseActivity() {
     private lateinit var mLineChart: LineChart
 
     private var currentCity = "北京"
+
+    private var codeSelect = 100
 
     override fun getLayoutId(): Int {
         return R.layout.activity_weather
@@ -49,11 +56,19 @@ class WeatherActivity: BaseActivity() {
         intent.run {
             val city = getStringExtra("city")
             if(!TextUtils.isEmpty(city))  {
+                // 语音进入
                 currentCity = city!!
+                loadWeatherData()
+            } else {
+                // 非语音进入
+                startCitySelectActivity()
             }
-            initChart()
-            loadWeather(currentCity)
         }
+    }
+
+    private fun loadWeatherData() {
+        initChart()
+        loadWeather(currentCity)
     }
 
 
@@ -71,6 +86,12 @@ class WeatherActivity: BaseActivity() {
                 override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
                     if(response.isSuccessful) {
                         response.body()?.let {
+
+                            if(it.error_code == 10012) {
+                                // 超过每日限制请求次数
+                                return
+                            }
+
                             // 填充数据
                             it.result.realtime.apply {
                                 // 设置天气
@@ -229,6 +250,41 @@ class WeatherActivity: BaseActivity() {
             invalidate()
             // 页眉
             legend.form = Legend.LegendForm.LINE
+        }
+    }
+
+    // 显示右上角菜单
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.city_menu, menu)
+        return true
+    }
+
+    // 右上角菜单图标点击事件
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.menu_setting) {
+            startCitySelectActivity()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    // 跳转城市选择
+    private fun startCitySelectActivity() {
+        val intent = Intent(this, CitySelectActivity::class.java)
+        startActivityForResult(intent, codeSelect)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            if(resultCode == codeSelect) {
+                data?.let {
+                    val city = it.getStringExtra("city")
+                    if(!TextUtils.isEmpty(city)) {
+                        currentCity = city!!
+                    }
+                }
+            }
+            loadWeatherData()
         }
     }
 }

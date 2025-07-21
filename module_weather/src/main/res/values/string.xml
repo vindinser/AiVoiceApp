@@ -10,4 +10,17 @@
     <string name="app_weather_hot">热门</string>
     <string name="app_weather_city">市</string>
     <string name="app_weather_district">县</string>
+
+    <!-- 热门城市 -->
+    <array name="HotCityArray">
+        <item>北京</item>
+        <item>廊坊</item>
+        <item>承德</item>
+        <item>朝阳</item>
+        <item>上海</item>
+        <item>广州</item>
+        <item>深圳</item>
+        <item>唐山</item>
+        <item>衡水</item>
+    </array>
 </resources>
