@@ -2,7 +2,8 @@ package com.zs.module_weather.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.zs.lib_base.base.adapter.CommonViewHolder
 import com.zs.lib_base.utils.AssetsUtil
 import com.zs.module_weather.R
 import com.zs.module_weather.bean.CitySelectBean
+import com.zs.module_weather.view.CitySelectView
 
 /**
  * 城市选择
@@ -42,6 +44,10 @@ class CitySelectActivity: BaseActivity() {
     // 内容
     private val mTypeContent = 1002
 
+    private lateinit var mCityListView: RecyclerView
+
+    private lateinit var mCitySelectView: CitySelectView
+
     override fun getLayoutId(): Int {
         return R.layout.activity_city_select
     }
@@ -62,7 +68,7 @@ class CitySelectActivity: BaseActivity() {
     }
 
     private fun initListView() {
-        val mCityListView = findViewById<RecyclerView>(R.id.mCityListView)
+        mCityListView = findViewById<RecyclerView>(R.id.mCityListView)
         mCityListView.layoutManager = LinearLayoutManager(this)
 
         // 分割线
@@ -106,6 +112,28 @@ class CitySelectActivity: BaseActivity() {
         })
 
         mCityListView.adapter = mCitySelectAdopter
+
+        // 监听滚动
+        mCityListView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                // 计算滚动到的是哪个城市，通知导航滚动
+                val lm = recyclerView.layoutManager
+                if(lm is LinearLayoutManager) {
+                    val firstPosition = lm.findFirstCompletelyVisibleItemPosition()
+                    val lastPosition = lm.findLastCompletelyVisibleItemPosition()
+                    // 取中间值
+                    val centerIndex = (lastPosition - firstPosition) / 2 + firstPosition
+                    // 获取省份
+                    val province = mList[centerIndex].province
+                    val itemIndex = mListTitle.indexOf(province)
+                    if(itemIndex >= 0 && itemIndex < mListTitle.size) {
+                        mCitySelectView.setCheckIndex(itemIndex)
+                    }
+                }
+            }
+        })
     }
 
     // 设置热门城市
@@ -144,27 +172,63 @@ class CitySelectActivity: BaseActivity() {
                     addTitle(province)
                 }
 
-                addContent("${ city }${ district }", district)
+                addContent("${ city }${ district }", district, province)
+            }
+        }
+
+        val mShowCity = findViewById<TextView>(R.id.mShowCity)
+
+        // 设置导航数据源
+        mCitySelectView = findViewById<CitySelectView>(R.id.mCitySelectView).apply {
+            setCity(mListTitle)
+
+            setOnViewResultListener(object : CitySelectView.OnViewResultListener {
+
+                override fun uiChange(uiShow: Boolean) {
+                    mShowCity.visibility = if(uiShow) View.VISIBLE else View.GONE
+                }
+
+                override fun valueInput(city: String) {
+                    mShowCity.text = city
+
+                    // 计算值
+                    findTextIndex(city)
+                }
+            })
+        }
+    }
+
+    /**
+     * 根据城市寻找下标
+     * @param {String} city 城市名称
+     */
+    private fun findTextIndex(city: String) {
+        if(mList.size > 0) {
+            mList.forEachIndexed { index, citySelectBean ->
+                if(city == citySelectBean.title) {
+                    mCityListView.scrollToPosition(index)
+                    return@forEachIndexed
+                }
             }
         }
     }
 
     // 添加标题
     private fun addTitle(title: String) {
-        val data = CitySelectBean(mTypeTitle, title, "", "")
+        val data = CitySelectBean(mTypeTitle, title, "", "", title)
         mList.add(data)
         mListTitle.add(title)
     }
 
     // 添加内容
-    private fun addContent(content: String, city: String) {
-        val data = CitySelectBean(mTypeContent, "", content, city)
+    private fun addContent(content: String, city: String, province: String) {
+        val data = CitySelectBean(mTypeContent, "", content, city, province)
         mList.add(data)
     }
 
     // 添加热门
     private fun addHot() {
-        val data = CitySelectBean(mTypeHotCity, "", "", "")
+        val data = CitySelectBean(mTypeHotCity, "", "", "", "热门")
         mList.add(data)
     }
 
