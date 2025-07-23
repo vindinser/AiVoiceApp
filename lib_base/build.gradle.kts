@@ -71,6 +71,11 @@ dependencies {
     // 图表
     api(DependenciesConfig.CHART)
 
+    api(fileTree(mapOf("dir" to "libs", "includes" to listOf("*.jar"))))
+
+    // 百度地图
+    api(files("libs/BaiduLBS_Android.jar"))
+
     api(project(":lib_voice"))
     api(project(":lib_network"))
 }

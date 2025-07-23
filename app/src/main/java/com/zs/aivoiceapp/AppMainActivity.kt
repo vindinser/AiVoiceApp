@@ -26,6 +26,10 @@ class AppMainActivity : BaseActivity() {
         Manifest.permission.CALL_PHONE,
         // 读取联系人
         Manifest.permission.READ_CONTACTS,
+        // 网络定位
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        // GPS定位
+        Manifest.permission.ACCESS_FINE_LOCATION
     )
 
     private val mList = ArrayList<MainListData>()

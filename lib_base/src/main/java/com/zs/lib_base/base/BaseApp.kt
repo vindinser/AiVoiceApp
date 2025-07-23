@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import com.zs.lib_base.helper.ARouterHelper
 import com.zs.lib_base.helper.NotificationHelper
+import com.zs.lib_base.map.MapManage
 import com.zs.lib_base.service.InitService
 
 /**
@@ -20,8 +21,10 @@ open class BaseApp: Application() {
         // 初始化语音服务
         NotificationHelper.initHelper(this)
 
+        // 初始化百度地图
+        MapManage.init(this)
+
         // 初始化IntentService
         startService(Intent(this, InitService::class.java))
-
     }
 }
