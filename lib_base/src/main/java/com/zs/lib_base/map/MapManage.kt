@@ -1,8 +1,8 @@
 package com.zs.lib_base.map
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
@@ -14,6 +14,16 @@ import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MapView
 import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.search.core.PoiInfo
+import com.baidu.mapapi.search.core.SearchResult
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener
+import com.baidu.mapapi.search.poi.PoiCitySearchOption
+import com.baidu.mapapi.search.poi.PoiDetailResult
+import com.baidu.mapapi.search.poi.PoiDetailSearchResult
+import com.baidu.mapapi.search.poi.PoiIndoorResult
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption
+import com.baidu.mapapi.search.poi.PoiResult
+import com.baidu.mapapi.search.poi.PoiSearch
 
 
 /**
@@ -31,12 +41,20 @@ object MapManage {
 
     private var mBaiduMap: BaiduMap? = null
 
+    // 用户的城市
+    private var locationCity: String? = ""
+
     // 定位客户端
     @SuppressLint("StaticFieldLeak")
     private lateinit var mLocationClicent: LocationClient
 
     // 定位对外的回调
     private var mOnLocationResultListener: OnLocationResultListener? = null
+
+    private var mPoiSearch: PoiSearch? = null
+
+    // Poi对外的回调
+    private var mOnPoiResultListener: OnPoiResultListener? = null
 
     // 初始化
     fun init(mContext: Context) {
@@ -46,6 +64,11 @@ object MapManage {
 
         LocationClient.setAgreePrivacy(true)
         mLocationClicent = LocationClient(mContext)
+
+        // 初始化定位
+        initLocation()
+
+        initPoi()
     }
 
     // 绑定 地图 mapview
@@ -55,9 +78,6 @@ object MapManage {
 
         // 默认缩放
         zoomMap(MAX_ZOOM)
-
-        // 初始化定位
-        initLocation()
     }
 
     // 缩放地图
@@ -114,6 +134,21 @@ object MapManage {
         }
     }
 
+    // poi 覆盖物
+    fun setPoiImage(poiResult: PoiResult) {
+        mBaiduMap?.clear()
+
+        // 创建PoiOverlay对象
+        val poiOverlay = PoiOverlay(mBaiduMap)
+
+        // 设置Poi检索数据
+        poiOverlay.setData(poiResult)
+
+        // 将poiOverlay添加至地图并缩放至合适级别
+        poiOverlay.addToMap()
+        poiOverlay.zoomToSpan()
+    }
+
     // 初始化定位
     private fun initLocation() {
         val option = LocationClientOption()
@@ -158,9 +193,11 @@ object MapManage {
                 Log.e(TAG, "location：${ location }")
 
                 if(location.locType == 61 || location.locType == 161) {
+                    locationCity = location.city
                     mOnLocationResultListener?.result(
                         location.latitude,
                         location.longitude,
+                        location.city,
                         location.addrStr,
                         location.locationDescribe
                     )
@@ -190,11 +227,97 @@ object MapManage {
 
         mLocationClicent.stop()
         mBaiduMap?.isMyLocationEnabled = false
+
+        mPoiSearch?.destroy()
+    }
+
+    // 初始化POI（地点检索）
+    private fun initPoi() {
+        mPoiSearch = PoiSearch.newInstance()
+        mPoiSearch?.setOnGetPoiSearchResultListener(object : OnGetPoiSearchResultListener {
+            override fun onGetPoiResult(result: PoiResult?) {
+                result?.let {
+                    if(it.error == SearchResult.ERRORNO.NO_ERROR) {
+                        mOnPoiResultListener?.result(it)
+                        // 再地图上绘制覆盖点
+                        setPoiImage(it)
+                    }
+                }
+            }
+
+            override fun onGetPoiDetailResult(p0: PoiDetailResult?) {
+                // 废弃
+            }
+
+            override fun onGetPoiDetailResult(result: PoiDetailSearchResult?) {
+
+            }
+
+            override fun onGetPoiIndoorResult(result: PoiIndoorResult?) {
+
+            }
+        })
+    }
+
+    private fun poiSearchInCity(keyword: String, city: String) {
+        mPoiSearch?.searchInCity(
+            PoiCitySearchOption()
+                .city(city)
+                .keyword(keyword)
+                .pageNum(0)
+        )
+    }
+
+    fun poiSearch(keyword: String, mOnPoiResultListener: OnPoiResultListener) {
+        this.mOnPoiResultListener = mOnPoiResultListener
+        var searchCity = locationCity;
+        if(TextUtils.isEmpty(locationCity)) {
+            setLocationSwitch(true, object : OnLocationResultListener {
+                override fun result(
+                    latitude: Double,
+                    longitude: Double,
+                    city: String,
+                    address: String,
+                    desc: String
+                ) {
+                    searchCity = city
+                }
+
+                override fun fail() {
+                    searchCity = "北京"
+                }
+            })
+        }
+
+        poiSearchInCity(keyword, searchCity!!)
+    }
+
+    fun poiSearch(keyword: String, city: String?, mOnPoiResultListener: OnPoiResultListener) {
+        this.mOnPoiResultListener = mOnPoiResultListener
+        poiSearchInCity(keyword, if(TextUtils.isEmpty(city) || city == "") "北京" else city!!)
+    }
+
+    // 搜索周边 以天安门(39.915446, 116.403869)为中心，搜索半径100米以内的餐厅
+    fun searchNearBy(la: Double, lo: Double, keyword: String) {
+        mPoiSearch?.searchNearby(
+            PoiNearbySearchOption()
+            .location(LatLng(la, lo))
+            .radius(500)
+            //支持多个关键字并集检索，不同关键字间以$符号分隔，最多支持10个关键字检索。如:”银行$酒店”
+            .keyword(keyword)
+            .pageNum(0))
     }
 
     interface OnLocationResultListener {
 
-        fun result(latitude: Double, longitude: Double, address: String, desc: String)
+        fun result(latitude: Double, longitude: Double, city: String, address: String, desc: String)
+
+        fun fail()
+    }
+
+    interface OnPoiResultListener {
+
+        fun result(result: PoiResult)
 
         fun fail()
     }

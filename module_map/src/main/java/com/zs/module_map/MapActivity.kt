@@ -1,6 +1,8 @@
 package com.zs.module_map
 
 import com.baidu.mapapi.map.MapView
+import com.baidu.mapapi.search.core.PoiInfo
+import com.baidu.mapapi.search.poi.PoiResult
 import com.therouter.router.Route
 import com.zs.lib_base.base.BaseActivity
 import com.zs.lib_base.helper.ARouterHelper
@@ -38,18 +40,33 @@ class MapActivity: BaseActivity() {
             override fun result(
                 latitude: Double,
                 longitude: Double,
+                city: String,
                 address: String,
                 desc: String
             ) {
                 L.i("定位成功，地址：${ address }，描述：${ desc }")
                 // 设置中心点
                 MapManage.setCenterMap(latitude, longitude)
+
+                MapManage.searchNearBy(latitude, longitude, "美食")
             }
 
             override fun fail() {
                 L.i("定位失败")
             }
         })
+
+        // MapManage.poiSearch("美食", object : MapManage.OnPoiResultListener {
+        //
+        //     override fun result(result: PoiResult) {
+        //         L.i("检索成功, ")
+        //         // MapManage.setPoiImage(result)
+        //     }
+        //
+        //     override fun fail() {
+        //         L.i("检索失败")
+        //     }
+        // })
     }
 
     override fun onResume() {
