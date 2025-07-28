@@ -29,7 +29,11 @@ class AppMainActivity : BaseActivity() {
         // 网络定位
         Manifest.permission.ACCESS_COARSE_LOCATION,
         // GPS定位
-        Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        // 振动器（用于导航过程中的震动提示）
+        Manifest.permission.VIBRATE,
+        // 摄像头（于AR步行导航）
+        Manifest.permission.CAMERA
     )
 
     private val mList = ArrayList<MainListData>()

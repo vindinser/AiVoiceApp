@@ -7,6 +7,7 @@ import com.therouter.router.Route
 import com.zs.lib_base.base.BaseActivity
 import com.zs.lib_base.helper.ARouterHelper
 import com.zs.lib_base.map.MapManage
+import com.zs.lib_base.map.MapManage.OnCodeResultListener
 import com.zs.lib_base.utils.L
 
 /**
@@ -46,9 +47,15 @@ class MapActivity: BaseActivity() {
             ) {
                 L.i("定位成功，地址：${ address }，描述：${ desc }")
                 // 设置中心点
-                MapManage.setCenterMap(latitude, longitude)
+                // MapManage.setCenterMap(latitude, longitude)
+                //
+                // MapManage.searchNearBy(latitude, longitude, "美食")
 
-                MapManage.searchNearBy(latitude, longitude, "美食")
+                // MapManage.startCode(city, address, object : OnCodeResultListener {
+                //     override fun result(codeLa: Double, codeLo: Double) {
+                //         MapManage.initNaviEngine(this@MapActivity, la, lo, codeLa, codeLo)
+                //     }
+                // })
             }
 
             override fun fail() {
