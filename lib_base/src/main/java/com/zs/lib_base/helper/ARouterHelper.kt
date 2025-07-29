@@ -46,6 +46,13 @@ object ARouterHelper {
             .navigation()
     }
 
+    fun startActivity(path: String, key: String, value: String, keyO: String, valueO: String) {
+        TheRouter.build(path)
+            .withString(key, value)
+            .withString(keyO, valueO)
+            .navigation()
+    }
+
     // 跳转页面并携带参数（Int）
     fun startActivity(path: String, key: String, value: Int) {
         TheRouter.build(path)

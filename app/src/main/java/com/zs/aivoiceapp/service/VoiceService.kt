@@ -484,4 +484,18 @@ class VoiceService: Service(), OnNluResultListener {
         ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER, "city", city)
         hideWindow()
     }
+
+    // 周边
+    override fun nearByMap(poi: String) {
+        addAIText("正在为您搜索周边：${ poi }")
+        ARouterHelper.startActivity(ARouterHelper.PATH_MAP, "type", "poi", "keyword", poi)
+        hideWindow()
+    }
+
+    // 导航
+    override fun routeMap(address: String) {
+        addAIText("正在为您规划路线：${ address }")
+        ARouterHelper.startActivity(ARouterHelper.PATH_MAP, "type", "address", "keyword", address)
+        hideWindow()
+    }
 }

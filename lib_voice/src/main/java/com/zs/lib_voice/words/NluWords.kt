@@ -94,6 +94,10 @@ object NluWords {
     const val NUL_HOTEL = "hotel"
     // 地图
     const val NUL_MAP = "map"
+    // 导航
+    const val INTENT_MAP_ROUTE = "ROUTE"
+    // 周边
+    const val INTENT_MAP_NEARBY = "NEARBY"
     // 综艺
     const val NUL_SHOW = "show"
     // 记账

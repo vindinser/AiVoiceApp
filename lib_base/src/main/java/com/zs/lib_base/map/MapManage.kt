@@ -2,6 +2,8 @@ package com.zs.lib_base.map
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import com.baidu.location.BDAbstractLocationListener
@@ -10,6 +12,10 @@ import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.map.BaiduMap
+import com.baidu.mapapi.map.BaiduMap.OnMapLongClickListener
+import com.baidu.mapapi.map.BaiduMap.SnapshotReadyCallback
+import com.baidu.mapapi.map.LogoPosition
+import com.baidu.mapapi.map.MapPoi
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MapView
@@ -80,6 +86,15 @@ object MapManage {
     // 编码监听对象
     private var mOnCodeResultListener: OnCodeResultListener? = null
 
+    private val mHandler by lazy { Handler() }
+
+    private var mOnNaviResultListener: OnNaviResultListener? = null
+
+    private var startLa: Double = 0.0
+    private var startLo: Double = 0.0
+    private var endAddress: String = ""
+    private var endCity: String = ""
+
     // 初始化
     fun init(mContext: Context) {
         // 在初始化地图前添加隐私协议确认
@@ -106,6 +121,8 @@ object MapManage {
         initWalkingRoute()
 
         initCode()
+
+        initListener()
     }
 
     // 缩放地图
@@ -328,7 +345,8 @@ object MapManage {
     }
 
     // 搜索周边 以天安门(39.915446, 116.403869)为中心，搜索半径100米以内的餐厅
-    fun searchNearBy(la: Double, lo: Double, keyword: String) {
+    fun searchNearBy(la: Double, lo: Double, keyword: String, mOnPoiResultListener: OnPoiResultListener) {
+        this.mOnPoiResultListener = mOnPoiResultListener
         mPoiSearch?.searchNearby(
             PoiNearbySearchOption()
             .location(LatLng(la, lo))
@@ -354,6 +372,13 @@ object MapManage {
                             overlay.addToMap()
                             // 缩放地图全屏展示
                             overlay.zoomToSpan()
+
+                            // 有路线以后通知外部，5s后自动设置导航
+                            mHandler.postDelayed({
+                                mOnNaviResultListener?.let {
+                                    it.onStartNavi(startLa, startLo, endAddress, endCity)
+                                }
+                            }, 5 * 1000)
                         } else {
                             Log.i(TAG, "规划路线为0")
                         }
@@ -384,8 +409,8 @@ object MapManage {
     }
 
     // 开始规划步行导航路线（自身定位）
-    fun startLocationWalkingSearch(toAddress: String) {
-
+    fun startLocationWalkingSearch(toAddress: String, mOnNaviResultListener: OnNaviResultListener) {
+        this.mOnNaviResultListener = mOnNaviResultListener
         // 定位
         setLocationSwitch(true, object : OnLocationResultListener {
             override fun result(
@@ -395,6 +420,11 @@ object MapManage {
                 address: String,
                 desc: String
             ) {
+                startLa = latitude
+                startLo = longitude
+                endAddress = toAddress
+                endCity = city
+
                 val start = PlanNode.withCityNameAndPlaceName(city, address)
                 val end = PlanNode.withCityNameAndPlaceName(city, toAddress)
 
@@ -461,6 +491,62 @@ object MapManage {
         });
     }*/
 
+    // 设置 logo 位置
+    fun setLogoPosition() {
+        mMapView?.logoPosition = LogoPosition.logoPostionCenterTop
+    }
+
+    // 设置指南针显示或隐藏
+    fun setCompassEnabled(enable: Boolean) {
+        //实例化UiSettings类对象
+        val mUiSettings = mBaiduMap?.getUiSettings()
+        //通过设置enable为true或false 选择是否显示指南针
+        mUiSettings?.isCompassEnabled = enable
+    }
+
+    // 比例尺
+    fun showScaleControl(enable: Boolean) {
+        mMapView?.showScaleControl(enable)
+    }
+
+    // 缩放按钮
+    fun showZoomControls(enable: Boolean) {
+        mMapView?.showZoomControls(enable)
+    }
+
+    // 截图
+    fun snapshot() {
+        mBaiduMap?.snapshot {
+            Log.i(TAG, "截图")
+        }
+    }
+
+    // 设置地图事件监听
+    private fun initListener() {
+        mBaiduMap?.let {
+            // 单击
+            it.setOnMapClickListener(object : BaiduMap.OnMapClickListener {
+                override fun onMapClick(la: LatLng?) {
+                    Log.i(TAG, "单击，la：${ la }")
+                }
+
+                override fun onMapPoiClick(p0: MapPoi?) {
+
+                }
+            })
+
+            // 双击
+            it.setOnMapDoubleClickListener {
+                Log.i(TAG, "双击")
+            }
+
+            // 长按
+            it.setOnMapLongClickListener {
+                Log.i(TAG, "长按")
+            }
+        }
+    }
+
     // 初始化地理编码
     private fun initCode() {
         mCoder = GeoCoder.newInstance()
@@ -512,5 +598,9 @@ object MapManage {
 
     interface OnCodeResultListener {
         fun result(la: Double, lo: Double)
+    }
+
+    interface OnNaviResultListener {
+        fun onStartNavi(startLa: Double, startLo: Double, endAddress: String, endCity: String)
     }
 }

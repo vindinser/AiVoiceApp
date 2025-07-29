@@ -66,6 +66,14 @@ interface OnNluResultListener {
     // 查询天气详情
     fun queryWeatherInfo(city: String)
 
+    /**
+     * =========================== 地图相关 ===========================
+     */
+    //  周边
+    fun nearByMap(poi: String)
+    // 规划 - 导航
+    fun routeMap(address: String)
+
     // 听不懂（无法识别）
     fun nluError()
 }
